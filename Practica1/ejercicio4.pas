@@ -45,6 +45,7 @@ procedure cargar(var emp: archivo);
 var
 	e: empleado;
 begin
+	asignar(emp);
 	rewrite(emp);
 	writeln('La lectura finaliza con el apellido "fin"');
 	leerEmpleado(e);
@@ -176,7 +177,7 @@ begin
     read(emp, e);
     writeln(txt,e.numero,' ',e.apellido,' ',e.nombre,' ',e.edad,' ',e.dni);
   end;
-  writeln('La importacion se ha realizado con exito');
+  writeln('La exportacion se ha realizado con exito');
   close(emp);
   close(txt);
 end;
@@ -199,11 +200,10 @@ begin
 	close(txtDni);
 end;
 
+procedure menu(var emp: archivo);
 var
-	emp: archivo;
-	categoria: char;
+	categoria : char;
 begin
-	asignar(emp);
 	categoria:= 'z';
 	while (categoria <> 'i')do begin
 		writeln('__________________________________________________________________________________________');
@@ -215,7 +215,7 @@ begin
         writeln('|e | Añadir un empleado                                                                   |');
         writeln('|f | Modificar la edad de un empleado                                                     |');
         writeln('|g | Exportar el contenido del archivo a un archivo de texto llamado "todos_empleados.txt"|');
-        writeln('|h | Exportar a un archivo de texto llamado: "faltaDNIEmpleado.txt", (DNI 00              |');
+        writeln('|h | Exportar a un archivo de texto llamado: "faltaDNIEmpleado.txt", (DNI 00)             |');
         writeln('|i | cerrar menu                                                                          |');
         writeln('|_________________________________________________________________________________________|');
 		readln(categoria);
@@ -229,8 +229,14 @@ begin
 			'g': exportarTxt(emp);
 			'h': exportarTxtDni(emp); //exporta los empleados que no tienen cargado el dni
             'i': WriteLn('Archivo Cerrado');
-			else writeln('Numero invalido'); 
+			else writeln('Caracter invalido'); 
 		end;
 	end;
+end;
+
+var
+	emp: archivo;
+begin
+	menu(emp);
 end.
 

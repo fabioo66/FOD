@@ -45,6 +45,7 @@ procedure cargar(var emp: archivo);
 var
 	e: empleado;
 begin
+	asignar(emp);
 	rewrite(emp);
 	writeln('La lectura finaliza con el apellido "fin"');
 	leerEmpleado(e);
@@ -109,12 +110,10 @@ begin
 	close(emp);
 end;
 
+procedure menu(var emp : archivo);
 var
-	emp: archivo;
-	categoria: char;
+	categoria : char;
 begin
-	randomize;
-	asignar(emp);
 	categoria:= 'z';
 	while (categoria <> 'e')do begin
 		writeln('__________________________________________________________________________________________');
@@ -132,7 +131,14 @@ begin
 			'c': informarArchivo(emp);
 			'd': proxJubilados(emp);
             'e': WriteLn('Archivo Cerrado');
-			else writeln('Numero invalido'); 
+			else writeln('Caracter invalido'); 
 		end;
 	end;
+end;	
+
+var
+	emp: archivo;
+begin
+	randomize;
+    menu(emp);
 end.
