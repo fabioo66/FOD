@@ -48,7 +48,7 @@ begin
             ' Nombre: ', c.nombre,
             ' Descripcion: ', c.descripcion,
             ' Marca: ', c.marca,
-            ' Precio: ', c.precio,
+            ' Precio: ', c.precio:0:2,
             ' Stock minimo: ', c.stockMinimo,
             ' Stock disponible: ', c.stockDisponible
             );
@@ -95,7 +95,9 @@ begin
 	reset(phone);
 	while(not eof(phone))do begin
 		read(phone, c);
-		writeln(txt, c.codigo, ' ', c.nombre, ' ', c.descripcion, ' ', c.marca, ' ', c.precio, ' ', c.stockMinimo, ' ', c.stockDisponible);
+		writeln(txt, c.codigo, ' ', c.precio, ' ', c.marca);  
+		writeln(txt, c.stockDisponible, ' ', c.stockMinimo, ' ', c.descripcion); 
+		writeln(txt, c.nombre);
 	end;
 	writeln('La exportacion se ha realizado con exito');
 	close(txt);

@@ -192,10 +192,12 @@ begin
 	reset(emp);
 	while(not eof(emp))do begin
 		read(emp, e);
-		if(e.dni = 00)then
-			writeln(txtDni,e.numero,' ',e.apellido,' ',e.nombre,' ',e.edad,' ',e.dni);
+		if(e.dni = 00)then begin
+			writeln(txtDni,e.numero,' ', e.edad,' ', e.dni, ' ', e.nombre);
+			writeln(txtDni, e.apellido);
+		end;	
 	end;
-	writeln('La importacion se ha realizado con exito');
+	writeln('La exportacion se ha realizado con exito');
 	close(emp);
 	close(txtDni);
 end;

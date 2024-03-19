@@ -95,7 +95,9 @@ begin
 	reset(phone);
 	while(not eof(phone))do begin
 		read(phone, c);
-		writeln(txt, c.codigo, ' ', c.nombre, ' ', c.descripcion, ' ', c.marca, ' ', c.precio, ' ', c.stockMinimo, ' ', c.stockDisponible);
+		writeln(txt, c.codigo, ' ', c.precio, ' ', c.marca);  
+		writeln(txt, c.stockDisponible, ' ', c.stockMinimo, ' ', c.descripcion); 
+		writeln(txt, c.nombre);
 	end;
 	writeln('La exportacion se ha realizado con exito');
 	close(txt);
@@ -135,18 +137,19 @@ end;
 procedure modificarStock(var phone : archivo);
 var
 	c : celular;
-	stock,codigo : integer;
+	stock : integer;
+	nombre : string[12];
 	encontre : boolean;
 begin
-	writeln('Ingrese el codigo de celular que desea modificar');
-	readln(codigo);
+	writeln('Ingrese el nombre del celular que desea modificar');
+	readln(nombre);
 	writeln('Ingrese el stock que desea ingresar');
 	readln(stock);
 	reset(phone);
 	encontre:= false;
 	while(not eof(phone)and(not encontre))do begin
 		read(phone, c);
-		if(c.codigo = codigo)then begin
+		if(c.nombre = nombre)then begin
 			encontre:= true;
 			c.stockDisponible:= stock;
 			seek(phone, filepos(phone)-1);
@@ -154,7 +157,7 @@ begin
 		end;
 	end;
 	if(not encontre)then
-		writeln('No se encontro un celular que coincida con el codigo ingresado');
+		writeln('No se encontro un celular que coincida con el nombre ingresado');
 	close(phone);
 end;
 
@@ -168,8 +171,11 @@ begin
 	reset(phone);
 	while(not eof(phone))do begin
 		read(phone, c);
-		if(c.stockDisponible = 0)then
-			writeln(txt, c.codigo, ' ', c.nombre, ' ', c.descripcion, ' ', c.marca, ' ', c.precio, ' ', c.stockMinimo, ' ', c.stockDisponible);
+		if(c.stockDisponible = 0)then begin
+			writeln(txt, c.codigo, ' ', c.precio, ' ', c.marca);  
+			writeln(txt, c.stockDisponible, ' ', c.stockMinimo, ' ', c.descripcion); 
+			writeln(txt, c.nombre);
+		end;
 	end;
 	writeln('La exportacion se ha realizado con exito');
 	close(txt);
