@@ -26,7 +26,6 @@ var
 	txt: text;
 	c: celular;
 begin
-	asignar(phone);
 	writeln('Importando datos de "celulares.txt"');
 	rewrite(phone);
 	assign(txt, 'celulares.txt');
@@ -72,6 +71,7 @@ procedure buscarDescripcion(var phone : archivo);
 var
 	c: celular;
 	desc: string;
+	posicion: integer;
 begin
 	reset(phone);
 	writeln('Ingrese una descripcion');
@@ -79,8 +79,9 @@ begin
 	writeln('Se encontraron las siguientes coincidencias');
 	while(not eof(phone))do begin
 		read(phone, c);
-		if(c.descripcion = desc)then
-			imprimirCelular(c);
+		posicion:= pos(desc, c.descripcion);
+		if(posicion > 0)then
+			imprimirCelular(c)
 	end;
 	close(phone);
 end;
@@ -218,5 +219,6 @@ var
 	phone : archivo;
 begin
 	//cargar(txt); se dispone
+	asignar(phone);
 	menu(phone);
 end.

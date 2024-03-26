@@ -45,7 +45,6 @@ procedure cargar(var emp: archivo);
 var
 	e: empleado;
 begin
-	asignar(emp);
 	rewrite(emp);
 	writeln('La lectura finaliza con el apellido "fin"');
 	leerEmpleado(e);
@@ -239,6 +238,7 @@ end;
 var
 	emp: archivo;
 begin
+	asignar(emp);
 	menu(emp);
 end.
 
