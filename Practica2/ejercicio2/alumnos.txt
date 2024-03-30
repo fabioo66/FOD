@@ -1,0 +1,12 @@
+1 4 5
+Juan
+González
+2 3 6
+María
+López
+3 2 4
+Carlos
+Martínez
+4 4 7
+Ana
+Sánchez

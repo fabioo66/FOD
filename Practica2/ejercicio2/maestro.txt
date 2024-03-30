@@ -1,0 +1,15 @@
+001 2 5
+Juan
+González
+
+002 3 6
+María
+López
+
+003 1 4
+Carlos
+Martínez
+
+004 4 7
+Ana
+Sánchez

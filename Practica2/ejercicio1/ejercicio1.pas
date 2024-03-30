@@ -4,8 +4,8 @@ const valorAlto = 9999;
 type
 	ingresosComision = record
 		codigo : integer;
-		nombre : string[30];
 		monto : real;
+		nombre : string[30];
 	end;
 	
 	archivo = file of ingresosComision;
@@ -21,7 +21,7 @@ begin
 	assign(txt, 'comisiones.txt');
 	reset(txt);
 	while(not eof(txt))do begin
-		read(txt, c.codigo, c.monto, c.nombre);
+		readln(txt, c.codigo, c.monto, c.nombre);
 		write(comision, c);
 	end;
 	writeln('La importacion se ha realizado con exito');
@@ -46,9 +46,9 @@ begin
 	assign(compactFile, ruta);
 end;
 	
-procedure compactar(var compactFile : archivo);	
+procedure compactar(var compactFile, comision : archivo);	
 var
-	comision : archivo;
+
 	c : ingresosComision;
 	codigo : integer;
 	montoTotal : real;
@@ -93,6 +93,6 @@ var
 	comision, compactFile : archivo;
 begin
 	importarTxt(comision);
-	compactar(compactFile);
+	compactar(compactFile, comision);
 	informar(compactFile);
 end.
