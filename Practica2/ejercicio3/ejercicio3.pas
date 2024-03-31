@@ -10,12 +10,12 @@ type
 		nombre : string;
 	end;
 	
-	ventas = record
+	venta = record
 		codigo : integer;
 		cantUnidades : integer;
 	end;
 	
-	detalle = file of ventas;
+	detalle = file of venta;
 	maestro = file of producto;
 	
 procedure importarMaestro(var mae : maestro);
@@ -39,7 +39,7 @@ end;
 procedure importarDetalle(var det : detalle);
 var
     txt2 : text;
-    regD : ventas;
+    regD : venta;
 begin
     assign(det, 'detalle.dat');
     rewrite(det);
@@ -54,7 +54,7 @@ begin
     close(txt2);
 end;
 
-procedure leer(var det: detalle; var regD : ventas);
+procedure leer(var det: detalle; var regD : venta);
 begin
     if(not eof(det))then 
         read(det, regD)
@@ -64,7 +64,7 @@ end;
 
 procedure actualizarMaestro(var mae : maestro; var det : detalle);
 var
-	regD : ventas; //registro detalle
+	regD : venta; //registro detalle
 	cantTotal, codigo : integer;
 	regM : producto; //registro maestro
 begin
