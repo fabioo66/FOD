@@ -1,0 +1,4 @@
+1 1500.00 15 20  Cerealitas
+2 200.00 0 50  Beldent
+3 500.00 25 70  Guaymallen
+4 1500.00 10 15  Frutigram
