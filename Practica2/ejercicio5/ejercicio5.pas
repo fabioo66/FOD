@@ -1,6 +1,6 @@
 program ejercicio5;
 const valorAlto = 9999;
-const dimf = 30;
+const dimf = 3; // = 30
 
 type
 	producto = record
@@ -45,17 +45,17 @@ end;
 
 procedure importarDetalle(var det : detalle);
 var
-	rutaBinario, rutaTxt : string;
+	ruta : string;
     txt2 : text;
     regD : venta;
 begin
 	writeln('Ingrese la ruta del archivo detalle binario');
-	readln(rutaBinario);
-    assign(det, rutaBinario);
+	readln(ruta);
+    assign(det, ruta);
     rewrite(det);
     writeln('Ingrese la ruta del archivo detalle.txt');
-	readln(rutaTxt);
-    assign(txt2, rutaTxt);
+	readln(ruta);
+    assign(txt2, ruta);
     reset(txt2);
     while(not eof(txt2)) do begin
         readln(txt2, regD.codigo, regD.cantUnidades); 
@@ -144,6 +144,8 @@ begin
 		regM.stockDisponible := regM.stockDisponible - cant;
 		seek(mae, filepos(mae)-1);
 		write(mae, regM);
+		if(not eof(mae))then
+			read(mae, regM);
 	end;
 	writeln('Maestro actualizado');		
 	reporte(mae);
@@ -169,9 +171,8 @@ begin
 end;
 
 var
-	mae : producto;
+	mae : maestro;
 	vd : vectorD;
-	i : rango;
 BEGIN
 	importarMaestro(mae);
 	cargarVectorDetalles(vd);

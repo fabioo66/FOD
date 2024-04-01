@@ -1,0 +1,8 @@
+1 1500 50 20 Cerealitas
+saladas
+2 200 30 50 Beldent
+chicle
+3 500 30 70 Guaymallen
+alfajor
+4 1500 20 15 Frutigram
+las que te salvan
