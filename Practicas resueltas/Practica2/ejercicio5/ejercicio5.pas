@@ -74,13 +74,13 @@ begin
 		importarDetalle(vd[i]);
 end;
 	
-procedure leer(var det : detalle; regD : venta);
+procedure leer(var det: detalle; var regD: venta);
 begin
-	if(not eof(det))then
+	if not eof(det) then
 		read(det, regD)
-	else
+	else 
 		regD.codigo := valorAlto;
-end;
+ end;
 
 procedure minimo(var vd : vectorD; var vr : vectorR; var min : venta);
 var
@@ -150,8 +150,9 @@ begin
 	writeln('Maestro actualizado');		
 	reporte(mae);
 	close(mae);
-	for i:= 1 to dimf do
+	for i := 1 to dimf do
 		close(vd[i]);
+	writeln('aca tira error');
 end;
 
 procedure imprimirProducto(p : producto);
@@ -168,6 +169,7 @@ begin
 		read(mae, p);
 		imprimirProducto(p);
 	end;
+	close(mae);
 end;
 
 var
