@@ -46,13 +46,11 @@ var
 	u : user;
 begin
 	encontre := false;
-	reset(usuario);
 	while(not eof(usuario))and(not encontre)do begin
 		read(usuario, u);
 		if(anio = u.anio)then
 			encontre := true;
 	end;
-	close(usuario);
 	esta := encontre;
 end;
 
