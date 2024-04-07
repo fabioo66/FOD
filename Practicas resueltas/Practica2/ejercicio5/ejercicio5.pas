@@ -89,34 +89,13 @@ begin
 	min.codigo := valorAlto;
 	for i := 1 to dimf do begin
 		if(vr[i].codigo < min.codigo)then begin
-			min.codigo := vr[i].codigo;
+			min := vr[i];
 			pos := i;
 		end;
-		if(min.codigo <> valorAlto)then
-			leer(vd[pos], vr[pos]);
 	end;
+	if(min.codigo <> valorAlto)then
+		leer(vd[pos], vr[pos]);
 end; 
-
-procedure reporte(var mae : maestro);
-var
-	regM : producto;
-	txt : text;
-begin
-	writeln('Exportando informe aquellos productos con stock por debajo del mininmo en "informe.txt"');
-	assign(txt, 'informe.txt');
-	rewrite(txt);
-	reset(mae);
-	while(not eof(mae))do begin
-		read(mae, regM);
-		if(regM.stockDisponible < regM.stockMinimo)then begin
-			writeln(txt, regM.stockDisponible, ' ', regM.nombre);
-			writeln(txt, regM.precio, ' ', regM.descripcion);
-		end;
-	end;
-	writeln('La exportacion se ha realizado con exito');
-	close(mae);
-	close(txt);
-end;
 
 procedure actualizarMaestro(var mae : maestro; var vd : vectorD);
 var
@@ -148,16 +127,35 @@ begin
 			read(mae, regM);
 	end;
 	writeln('Maestro actualizado');		
-	reporte(mae);
 	close(mae);
 	for i := 1 to dimf do
 		close(vd[i]);
-	writeln('aca tira error');
+end;
+
+procedure reporte(var mae : maestro);
+var
+	regM : producto;
+	txt : text;
+begin
+	writeln('Exportando informe aquellos productos con stock por debajo del mininmo en "informe.txt"');
+	assign(txt, 'informe.txt');
+	rewrite(txt);
+	reset(mae);
+	while(not eof(mae))do begin
+		read(mae, regM);
+		if(regM.stockDisponible < regM.stockMinimo)then begin
+			writeln(txt, regM.stockDisponible, ' ', regM.nombre);
+			writeln(txt, regM.precio:0:2, ' ', regM.descripcion);
+		end;
+	end;
+	writeln('La exportacion se ha realizado con exito');
+	close(txt);
+	close(mae);
 end;
 
 procedure imprimirProducto(p : producto);
 begin
-	writeln('Codigo= ', p.codigo, ' precio= ', p.precio:0:2, ' stock actual ', p.stockDisponible, ' stock minimo ', p.stockMinimo, ' nombre ', p.nombre, ' descripcion ', p.descripcion);
+	writeln('Codigo= ', p.codigo, ' precio= ', p.precio:0:2, ' stock disponible ', p.stockDisponible, ' stock minimo ', p.stockMinimo, ' nombre ', p.nombre, ' descripcion ', p.descripcion);
 end;
 		
 procedure imprimirMaestro(var mae : maestro);
@@ -179,6 +177,7 @@ BEGIN
 	importarMaestro(mae);
 	cargarVectorDetalles(vd);
 	actualizarMaestro(mae, vd);
+	reporte(mae);
 	imprimirMaestro(mae);
 END.
 

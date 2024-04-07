@@ -1,4 +1,4 @@
 30  Beldent
- 2.0000000000000000E+002 chicle
-30  Guaymallen
- 5.0000000000000000E+002 alfajor
+200.00 chicle
+10  Guaymallen
+500.00 alfajor
