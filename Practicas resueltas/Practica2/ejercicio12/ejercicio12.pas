@@ -72,6 +72,29 @@ begin
 		regD.numUsuario := valorAlto;
 end;
 
+procedure actualizarMaestro(var mae : maestro; var det : detalle);
+var
+	regM : login;
+	regD : mail;
+	numUsuario, cantEmails : integer;
+begin
+	reset(mae);
+	reset(det);
+	read(mae, regM);
+	leer(det, regD);
+	while(regD.numUsuario <> valorAlto)do begin
+		numUsuario := regD.numUsuario;
+		cantMails := 0;
+		while(regD.numUsuario = numUsuario)do begin
+			cantEmails := cantEmails + regD.cantEmails;
+			leer(det, regD);
+		end;
+		while(regM.numUsuario <> numUsuario)do
+			read(mae, regM);
+		regM.cantEmails := regM.cantEmails + cantEmails;
+		seek(mae, filepos(mae)-1);
+end;
+
 var
 
 begin 
