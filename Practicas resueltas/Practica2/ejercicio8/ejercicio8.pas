@@ -68,21 +68,22 @@ begin
 			dato.anio := regM.anio;
 			totalAnio := 0;
 			while(regM.codigo = dato.codigo) and (regM.anio = dato.anio)do begin
-				writeln('Mes ', regM.mes);
 				dato.mes := regM.mes;
 				totalMes := 0;
 				while(regM.codigo = dato.codigo) and (regM.anio = dato.anio) and (regM.mes = dato.mes)do begin
 					totalMes := totalMes + regM.monto;
 					leer(mae, regM);
 				end;
-				writeln('Total gastado en el mes ', dato.mes, ' = ', totalMes:0:2);
-				totalAnio := totalAnio + totalMes;
+				if(totalMes <> 0)then begin
+					writeln('Total gastado en el mes ', dato.mes, ' = ', totalMes:0:2);
+					totalAnio := totalAnio + totalMes;
+				end;
 			end;
-		    writeln('Total gastado en el anio ', dato.anio, ' = ', totalAnio:0:2);
-		    totalEmpresa := totalEmpresa + totalMes;
+		    writeln('Total gastado en el anio = ', totalAnio:0:2);
+		    totalEmpresa := totalEmpresa + totalAnio;
 		end;
-	    writeln('Monto total de ventas obtenido por la empresa ', totalEmpresa:0:2);
 	end;
+	writeln('Monto total de ventas obtenido por la empresa ', totalEmpresa:0:2);
 	close(mae);
 end;
 
