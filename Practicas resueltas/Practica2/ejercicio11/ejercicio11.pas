@@ -3,11 +3,12 @@ const
 	valorAlto = 9999;
 type
 	drango = 1..31;
+	mrango = 1..12;
 	
 	user = record
 		anio : integer;
 		mes : integer;
-		dia : drango;
+		dia : mrango;
 		id : integer;
 		tiempo : real;
 	end;
@@ -37,7 +38,7 @@ begin
     if (not eof(usuario)) then
         read(usuario, u)
     else 
-        u.mes := valorAlto;
+        u.anio := valorAlto;
 end; 
 
 function esta(var usuario : archivo; anio : integer): boolean;
@@ -64,35 +65,38 @@ begin
 	writeln('Ingrese el año que desea imprimir');
 	readln(anio);
 	if(esta(usuario, anio))then begin
-		writeln('Año ', anio);
-		tiempoTotalAnio := 0;
 		leer(usuario, u);
-		while(u.mes <> valorAlto)do begin
-			writeln('Mes ', u.mes);
-			tiempoTotalMes := 0;
-			mes := u.mes;
-			while(u.mes = mes)do begin
-				writeln('Dia ', u.dia);
-				tiempoTotalDia := 0;
-				dia := u.dia;
-				while(u.mes = mes)and(u.dia = dia)do begin
-					writeln('Id de usuario', u.id);
-					tiempoTotalId := 0;
-					id := u.id;
-					while(u.mes = mes)and(u.dia = dia)and(u.id = id)do begin
-						tiempoTotalId := tiempoTotalId + u.tiempo;
-						leer(usuario, u);
+		while(u.anio <> valorAlto)do begin
+			writeln('Año ', u.anio);
+			tiempoTotalAnio := 0;
+			anio := u.anio;
+			while(u.anio = anio)do begin
+				writeln('Mes ', u.mes);
+				tiempoTotalMes := 0;
+				mes := u.mes;
+				while(u.anio = anio)and(u.mes = mes)do begin
+					writeln('Dia', u.dia);
+					tiempoTotalDia := 0;
+					dia := u.dia;
+					while(u.anio = anio) and (u.mes = mes)and(u.dia = dia) do begin
+						writeln('Id de usuario ', u.id);
+						tiempoTotalId := 0;
+						id := u.id;
+						while(u.anio = anio) and (u.mes = mes)and(u.dia = dia) and (u.id = id) do begin
+							tiempoTotalId := tiempoTotalId + u.tiempo;
+							leer(usuario, u);
+						end;
+						writeln('Tiempo total de acceso id ', id, ' = ', tiempoTotalId:0:2);
+						tiempoTotalDia := tiempoTotalDia + tiempoTotalId;
 					end;
-					writeln('Tiempo total de acceso id ', id, ' = ', tiempoTotalId:0:2);
-					tiempoTotalDia := tiempoTotalDia + tiempoTotalId;
+					writeln('Tiempo total dia ', tiempoTotalDia:0:2);
+					tiempoTotalMes := tiempoTotalMes + tiempoTotalDia;
 				end;
-				writeln('Tiempo total dia ', tiempoTotalDia:0:2);
-				tiempoTotalMes := tiempoTotalMes + tiempoTotalDia;
+				writeln('Tiempo total mes ', tiempoTotalMes:0:2);
+				tiempoTotalAnio := tiempoTotalAnio + tiempoTotalMes;
 			end;
-			writeln('Tiempo total mes ', tiempoTotalMes:0:2);
-			tiempoTotalAnio := tiempoTotalAnio + tiempoTotalMes;
+			writeln('Tiempo total año ', tiempoTotalAnio:0:2);
 		end;
-		writeln('Tiempo total año ', tiempoTotalAnio:0:2);
 	end
 	else
 		writeln('No se encontro ningun año que coincida con el ingresado');

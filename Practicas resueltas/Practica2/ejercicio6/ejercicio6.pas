@@ -63,7 +63,7 @@ begin
 	min.codigo := valorAlto;
 	min.fecha := 'ZZZZ';
 	for i := 1 to dimf do begin
-		if (vr[i].codigo < min.codigo) or ((vr[i].codigo = min.codigo) and (vr[i].fecha < min.fecha)) then begin
+		if (vr[i].codigo < min.codigo) or ((vr[i].codigo = min.codigo)) then begin
 			min := vr[i];
 			pos := i;
 		end;
@@ -85,7 +85,7 @@ end;
 		leer(vd[i], vr[i]);
 	end;
 	minimo(vd, vr, min);
-	while(vr[i].codigo <> valorAlto)do begin
+	while(min.codigo <> valorAlto)do begin
 		dato.codigo := min.codigo;
 		while(min.codigo = dato.codigo)do begin
 			dato.fecha := min.fecha;
@@ -105,7 +105,7 @@ end;
  
  procedure imprimirSesion(s : sesion);
  begin
-	writeln('Codigo de usuario ', s.codigo, 'fecha', s.fecha, 'tiempo total ', s.tiempo:0:2);
+	writeln('Codigo de usuario ', s.codigo, ' fecha ', s.fecha, ' tiempo total ', s.tiempo:0:2);
  end;
 
 procedure imprimirMaestro(var mae : maestro);

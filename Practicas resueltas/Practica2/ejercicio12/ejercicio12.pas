@@ -80,7 +80,7 @@ begin
 		numUsuario := regD.numUsuario;
 		cantEmails := 0;
 		while(regD.numUsuario = numUsuario)do begin
-			cantEmails := cantEmails + regM.cantEmails;
+			cantEmails := cantEmails + 1;
 			leer(det, regD);
 		end;
 		while(regM.numUsuario <> numUsuario)do
@@ -105,12 +105,22 @@ begin
 	reset(mae);
 	while(not eof(mae))do begin
 		read(mae, regM); 
-		writeln(txt, regM.numUsuario, ' ', regM.cantEmails, ' ', regM.nombreUsuario);
-		writeln(txt, regM.nombre);
-		writeln(txt, regM.apellido);
+		writeln(txt, regM.numUsuario, ' ', regM.cantEmails);
 	end;	
 	close(mae);
 	close(txt);		
+end;
+
+procedure imprimirMaestro(var mae : maestro);
+var
+	regM : log;
+begin
+	reset(mae);
+	while(not eof(mae))do begin
+		read(mae, regM);
+		writeln('Numero de usuario ', regM.numUsuario, ' nombre de usuario ', regM.nombreUsuario, ' nombre ', regM.nombre, ' apellido ', regM.apellido, ' cantidad de emails enviados ', regM.cantEmails);
+	end;
+	close(mae);
 end;
 
 var
@@ -120,5 +130,6 @@ begin
 	importarDetalle(det);
 	importarMaestro(mae);
 	actualizarMaestro(mae, det);
+	imprimirMaestro(mae);
 	exportarATxt(mae);
 end.

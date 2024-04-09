@@ -161,14 +161,36 @@ begin
 	close(txt);		
 end;
 
+procedure menu(var mae: maestro; var det : detalle);
+var
+	categoria : char;
+begin
+	categoria:= '>';
+	while (categoria <> 'd')do begin
+		writeln('________________________________________________________________________________________________________________');
+		writeln('|Menu                                                                                                          |');
+		writeln('|a | Actualizar maestro                                                                                        |');
+		writeln('|b | Exportar aquellos alumnos que tengan más materias con finales aprobados que materias sin finales aprobados|');
+		writeln('|c | Imprimir archivo maestro                                                                                  |');
+		writeln('|d | Cerrar archivo                                                                                            |');
+        writeln('|______________________________________________________________________________________________________________|');
+		readln(categoria);
+		case categoria of
+			'a': actualizarMaestro(mae, det);
+			'b': exportarATxt(mae);
+			'c': imprimirArchivoMaestro(mae);
+			'd': writeln('Archivo cerrado ');
+			else writeln('Caracter invalido'); 
+		end;
+	end;
+end;
+
 var
 	det : detalle;
 	mae : maestro;
 BEGIN
 	importarMaestro(mae);
 	importarDetalle(det);
-	actualizarMaestro(mae, det);
-	imprimirArchivoMaestro(mae);
-	exportarATxt(mae);
+	menu(mae, det);
 END.
 

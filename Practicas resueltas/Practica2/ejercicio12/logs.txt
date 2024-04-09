@@ -1,9 +1,3 @@
-1 3  fabioo66
-Fabio
-Torrejon
-2 6  cape
-Valentin 
-Capelli
-3 5  fer99
-Fermin
-Prida
+1 4
+2 5
+3 6
