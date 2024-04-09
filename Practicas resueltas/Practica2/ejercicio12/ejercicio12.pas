@@ -1,9 +1,3 @@
-{se guarda la siguiente información:
-nro_usuario, nombreUsuario, nombre, apellido, cantidadMailEnviados. Diariamente el
-servidor de correo genera un archivo con la siguiente información: nro_usuario,
-cuentaDestino, cuerpoMensaje. Este archivo representa todos los correos enviados por los
-usuarios en un día determinado.}
-
 program ejercicio12;
 const
 	valorAlto = 9999;
@@ -55,8 +49,8 @@ begin
     assign(txt2, 'detalle.txt');
     reset(txt2);
     while(not eof(txt2)) do begin
-        readln(txt2, regD.usuario, regD.destino);
-        readln(txt2, regD.codigo); 
+        readln(txt2, regD.numUsuario, regD.destino);
+        readln(txt2, regD.mensaje); 
         write(det, regD);
     end;
     writeln('Archivo detalle creado');
@@ -64,17 +58,17 @@ begin
     close(txt2);
 end;
 
-procedure leer(var det : detalle; regD : mail);
+procedure leer(var det: detalle; var regD: mail);
 begin
-	if(not eof(det))then
-		read(det, regD)
-	else
-		regD.numUsuario := valorAlto;
+    if (not eof(det)) then
+        read(det, regD)
+    else
+        regD.numUsuario := valorAlto;
 end;
 
 procedure actualizarMaestro(var mae : maestro; var det : detalle);
 var
-	regM : login;
+	regM : log;
 	regD : mail;
 	numUsuario, cantEmails : integer;
 begin
@@ -84,19 +78,47 @@ begin
 	leer(det, regD);
 	while(regD.numUsuario <> valorAlto)do begin
 		numUsuario := regD.numUsuario;
-		cantMails := 0;
+		cantEmails := 0;
 		while(regD.numUsuario = numUsuario)do begin
-			cantEmails := cantEmails + regD.cantEmails;
+			cantEmails := cantEmails + regM.cantEmails;
 			leer(det, regD);
 		end;
 		while(regM.numUsuario <> numUsuario)do
 			read(mae, regM);
 		regM.cantEmails := regM.cantEmails + cantEmails;
 		seek(mae, filepos(mae)-1);
+		write(mae, regM);
+		if(not eof(mae))then
+			read(mae, regM);
+	end;
+	close(mae);
+	writeln('Archivo maestro actualizado');
+end;
+
+procedure exportarATxt(var mae : maestro);
+var
+	txt : text;
+	regM : log;
+begin
+	assign(txt, 'logs.txt');
+	rewrite(txt);
+	reset(mae);
+	while(not eof(mae))do begin
+		read(mae, regM); 
+		writeln(txt, regM.numUsuario, ' ', regM.cantEmails, ' ', regM.nombreUsuario);
+		writeln(txt, regM.nombre);
+		writeln(txt, regM.apellido);
+	end;	
+	close(mae);
+	close(txt);		
 end;
 
 var
-
+	mae : maestro;
+	det : detalle;
 begin 
-
+	importarDetalle(det);
+	importarMaestro(mae);
+	actualizarMaestro(mae, det);
+	exportarATxt(mae);
 end.
