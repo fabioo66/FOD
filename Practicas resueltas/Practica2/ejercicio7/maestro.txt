@@ -1,10 +1,10 @@
-100 1 0 0 0 0 Cepa1
+1 1 25 10 5 2 covid1
 La Plata
-100 2 0 0 0 0 Cepa2
+1 2 10 2 3 1 covid2
 La Plata
-101 1 0 0 0 0 Cepa1
-Varela
-101 2 0 0 0 0 Cepa2
-Varela
-102 1 0 0 0 0 Cepa1
-Merlo
+2 1 30 2 4 1 covid1
+Brandsen
+2 2 20 5 2 3 covid2
+Brandsen
+3 1 30 2 5 1 0 covid1
+San Vicente

@@ -95,9 +95,8 @@ var
 	i, pos : integer;
 begin
 	min.codigoLoc := valorAlto;
-	min.codigoCepa := valorAlto;
 	for i := 1 to dimf do begin
-		if (vr[i].codigoLoc < min.codigoLoc) or ((vr[i].codigoLoc = min.codigoLoc) and (vr[i].codigoCepa < min.codigoCepa)) then begin
+		if (vr[i].codigoLoc < min.codigoLoc) or (vr[i].codigoLoc = min.codigoLoc) then begin
 			min := vr[i];
 			pos := i;
 		end;
