@@ -68,9 +68,9 @@ begin
     close(txt2);
 end;
 
-procedure leer(var det : detalle; regD : info);
+procedure leer(var det : detalle; var regD : info);
 begin
-	if(not eof(det))then
+	if (not eof(det)) then
 		read(det, regD)
 	else 
 		regD.destino := valorAlto;
@@ -102,8 +102,6 @@ procedure actualizarMaestro(var mae : maestro; var det1, det2 : detalle; var L :
 var
 	r1, r2, min : info;
 	regM : vuelo;
-	destino, fecha : string;
-	hora : real;
 	cant : integer;
 begin
 	L := nil;
@@ -112,26 +110,23 @@ begin
 	reset(mae);
 	reset(det1);
 	reset(det2);
-	read(mae, regM);
+	leer(det1, r1);
+	leer(det2, r2);
 	minimo(det1, det2, r1, r2, min);
 	while(min.destino <> valorAlto)do begin
-		destino := min.destino;
-		while(min.destino = destino)do begin
-			fecha := min.fecha;
-			while(min.destino = destino) and (min.fecha = fecha)do begin
-				hora := min.hora;
-				while(min.destino = destino) and (min.fecha = fecha) and(min.hora = hora)do begin
+		read(mae, regM);
+		while(min.destino = regM.destino)do begin
+			read(mae, regM);
+			while(min.destino = regM.destino) and (min.fecha = regM.fecha)do begin
+				read(mae, regM);
+				while(min.destino = regM.destino) and (min.fecha = regM.fecha) and(min.hora = regM.hora)do begin
 					regM.cantAsientos:= regM.cantAsientos - min.cantAsientosVendidos;
 					minimo(det1, det2, r1, r2, min);
 				end;
 				if(regM.cantAsientos < cant)then
 					agregarAdelante(L, regM);
-				while(regM.destino <> destino)do 
-					read(mae, regM);
 				seek(mae, filepos(mae)-1);
 				write(mae, regM);
-				if(not eof(mae))then
-					read(mae, regM);
 			end;
 		end;
 	end;
