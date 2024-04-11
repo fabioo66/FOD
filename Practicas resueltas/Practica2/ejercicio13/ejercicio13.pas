@@ -59,8 +59,8 @@ begin
     assign(txt2, ruta);
     reset(txt2);
     while(not eof(txt2)) do begin
-        readln(txt, regD.hora, regD.cantAsientosVendidos, regD.fecha);
-		readln(txt, regD.destino);
+        readln(txt2, regD.hora, regD.cantAsientosVendidos, regD.fecha);
+		readln(txt2, regD.destino);
         write(det, regD);
     end;
     writeln('Archivo detalle creado');
@@ -72,7 +72,7 @@ procedure leer(var det : detalle; regD : info);
 begin
 	if(not eof(det))then
 		read(det, regD)
-	else
+	else 
 		regD.destino := valorAlto;
 end;
 
@@ -98,7 +98,7 @@ begin
 	L := nue;
 end;
 
-procedure actualizarMaestro(var mae : maestro; var det1,det2 : detalle; var L : lista);
+procedure actualizarMaestro(var mae : maestro; var det1, det2 : detalle; var L : lista);
 var
 	r1, r2, min : info;
 	regM : vuelo;
@@ -112,6 +112,7 @@ begin
 	reset(mae);
 	reset(det1);
 	reset(det2);
+	read(mae, regM);
 	minimo(det1, det2, r1, r2, min);
 	while(min.destino <> valorAlto)do begin
 		destino := min.destino;
@@ -161,12 +162,12 @@ end;
 var
 	mae : maestro;
 	det1, det2 : detalle;
-	l : lista;
+	L : lista;
 begin
 	importarMaestro(mae);
 	importarDetalle(det1);
 	importarDetalle(det2);
-	actualizarMaestro(mae);
+	actualizarMaestro(mae, det1, det2, L);
 	imprimirMaestro(mae);
 	writeln('---------------------------------');
 	imprimirLista(l);
