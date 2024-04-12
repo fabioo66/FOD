@@ -63,7 +63,7 @@ begin
 	min.codigo := valorAlto;
 	min.fecha := 'ZZZZ';
 	for i := 1 to dimf do begin
-		if (vr[i].codigo < min.codigo) or ((vr[i].codigo = min.codigo)) then begin
+		if (vr[i].codigo <= min.codigo) then begin
 			min := vr[i];
 			pos := i;
 		end;

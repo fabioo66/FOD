@@ -88,7 +88,7 @@ var
 begin
 	min.codigo := valorAlto;
 	for i := 1 to dimf do begin
-		if(vr[i].codigo < min.codigo)then begin
+		if(vr[i].codigo <= min.codigo)then begin
 			min := vr[i];
 			pos := i;
 		end;
