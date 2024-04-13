@@ -115,10 +115,14 @@ begin
 	minimo(det1, det2, r1, r2, min);
 	while(min.destino <> valorAlto)do begin
 		read(mae, regM);
-		while(min.destino = regM.destino)do begin
+		while(min.destino <> regM.destino)do 
 			read(mae, regM);
-			while(min.destino = regM.destino) and (min.fecha = regM.fecha)do begin
+		while(min.destino = regM.destino)do begin
+			while(regM.fecha <> min.fecha)do
 				read(mae, regM);
+			while(regM.destino = min.destino) and (regM.fecha = min.fecha)do begin
+				while(regM.hora <> min.hora)do
+					read(mae, regM);
 				while(min.destino = regM.destino) and (min.fecha = regM.fecha) and(min.hora = regM.hora)do begin
 					regM.cantAsientos:= regM.cantAsientos - min.cantAsientosVendidos;
 					minimo(det1, det2, r1, r2, min);

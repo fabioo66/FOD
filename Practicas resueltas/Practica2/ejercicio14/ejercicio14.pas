@@ -135,8 +135,6 @@ begin
 				read(mae, regM);
 			seek(mae, filepos(mae)-1);
 			write(mae, regM);
-			if(not eof(mae))then
-				read(mae, regM);
 		end;
 	end;
 	close(mae);
