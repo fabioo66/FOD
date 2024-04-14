@@ -93,7 +93,7 @@ var
 begin
 	min.fecha := valorAlto;
 	for i := 1 to dimf do begin
-		if(vr[i].fecha < min.fecha)then begin
+		if(vr[i].fecha <= min.fecha)then begin
 			min := vr[i];
 			pos := 1;
 		end;
