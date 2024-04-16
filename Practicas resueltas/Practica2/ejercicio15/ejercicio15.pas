@@ -95,7 +95,7 @@ begin
 	for i := 1 to dimf do begin
 		if(vr[i].fecha <= min.fecha)then begin
 			min := vr[i];
-			pos := 1;
+			pos := i;
 		end;
 	end;
 	if(min.fecha <> valorAlto)then
@@ -108,7 +108,12 @@ var
 	vr : vectorR;
 	min, dato : venta;
 	i : rango;
+	max1, min1 : integer;
+	fechaMin, fechaMax : string;
+	codigoMin, codigoMax, totalVentas : integer;
 begin
+	max1 := -1;
+	min1 := 9999;
 	reset(mae);
 	read(mae, regM);
 	for i := 1 to dimf do begin
@@ -120,12 +125,26 @@ begin
 		dato.fecha := min.fecha;
 		while(dato.fecha = min.fecha)do begin
 			dato.codigo := min.codigo;
+		totalVentas := 0;
 			while(dato.fecha = min.fecha) and (dato.codigo = min.codigo)do begin
 				regM.totalVendidos := regM.totalVendidos + min.cant;
+				regM.total := regM.total - min.cant;
+				totalVentas := totalVentas + min.cant;
 				minimo(vd, vr, min);
 			end;
-			while(regM.fecha <> dato.fecha)do
+			if(totalVentas > max1)then begin
+				max1 := totalVentas;
+				fechaMax := regM.fecha;
+				codigoMax := regM.codigo
+			end
+			else if(totalVentas < min1)then begin
+				min1:= totalVentas;
+				fechaMin := regM.fecha;
+				codigoMin := regM.codigo;
+			end;
+			while(regM.fecha <> dato.fecha)do begin
 				read(mae, regM);
+			end;
 			seek(mae, filepos(mae)-1);
 			write(mae, regM);
 			if(not eof(mae))then
@@ -133,6 +152,8 @@ begin
 		end;
 	end;
 	close(mae);
+	writeln('El semanario con mas ventas es ', fechaMax, ' ', codigoMax);
+	writeln('El semanario con menos ventas es ', fechaMin, ' ', codigoMin);
 	writeln('Archivo maestro actualizado');
 	for i := 1 to dimf do
 		close(vd[i]);
@@ -149,40 +170,12 @@ begin
 	end
 end;
 
-procedure maxYMin(var mae : maestro; var maxFecha, minFecha : string; var maxCodigo, minCodigo : integer);
-var
-	regM : emision;
-	min, max : integer;
-begin
-	max := -9999;
-	min := 9999;
-	reset(mae);
-	while(not eof(mae))do begin
-		read(mae, regM);
-		if(regM.totalVendidos > max)then begin
-			max := regM.totalVendidos;
-			maxFecha := regM.fecha;
-			maxCodigo := regM.codigo
-		end
-		else if(regM.totalVendidos < min)then begin
-			min := regM.totalVendidos;
-			minFecha := regM.fecha;
-			minCodigo := regM.codigo;
-		end;
-	end;
-	close(mae);
-end;
-
 var
 	mae : maestro;
 	vd : vectorD;
-	maxFecha, minFecha : string;
-	maxCodigo, minCodigo : integer;
 begin
 	importarMaestro(mae);
 	cargarVectorDetalles(vd);
 	actualizarMaestro(mae, vd);
 	imprimirMaestro(mae);
-	maxYMin(mae, maxFecha, minFecha, maxCodigo, minCodigo);
-	writeln('El semanario con mas ventas es ', maxCodigo, ' ', maxFecha, ' y el semanario con menos ventas es ', minCodigo, ' ', minFecha);
 end.

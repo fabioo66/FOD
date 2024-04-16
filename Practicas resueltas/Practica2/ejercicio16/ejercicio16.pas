@@ -95,7 +95,7 @@ begin
 	for i := 1 to dimf do begin
 		if(vr[i].codigo <= min.codigo)then begin
 			min := vr[i];
-			pos := 1;
+			pos := i;
 		end;
 	end;
 	if(min.codigo <> valorAlto)then
@@ -161,6 +161,5 @@ BEGIN
 	actualizarMaestro(mae, vd, maxMoto);
 	imprimirMaestro(mae);
 	writeln('El codigo de moto mas vendida es ', maxMoto);
-	
 END.
 
