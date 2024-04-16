@@ -5,21 +5,15 @@ type
 	vuelo = record
 		destino : string;
 		fecha : string;
-		hora : real;
+		hora : string;
 		cantAsientos : integer;
 	end;
 
 	info = record
 		destino : string;
 		fecha : string;
-		hora : real;
+		hora : string;
 		cantAsientosVendidos : integer;
-	end;
-		
-	lista = ^nodo;
-	nodo = record
-		dato : vuelo;
-		sig : lista;
 	end;
 	
 	maestro = file of vuelo;
@@ -35,8 +29,9 @@ begin
 	assign(txt, 'maestro.txt');
 	reset(txt);
 	while(not eof(txt))do begin
-		readln(txt, regM.hora, regM.cantAsientos, regM.fecha);
-		readln(txt, regM.destino);
+		readln(txt, regM.cantAsientos, regM.destino);
+		readln(txt, regM.fecha);
+		readln(txt, regM.hora);
 		write(mae, regM);
 	end;
 	writeln('Archivo maestro creado');
@@ -59,8 +54,9 @@ begin
     assign(txt2, ruta);
     reset(txt2);
     while(not eof(txt2)) do begin
-        readln(txt2, regD.hora, regD.cantAsientosVendidos, regD.fecha);
-		readln(txt2, regD.destino);
+        readln(txt2, regD.cantAsientosVendidos, regD.destino);
+		readln(txt2, regD.fecha);
+		readln(txt2, regD.hora);
         write(det, regD);
     end;
     writeln('Archivo detalle creado');
@@ -78,7 +74,7 @@ end;
 
 procedure minimo(var det1, det2: detalle; var r1, r2, min : info);
 begin
-	if(r1.destino <= r2.destino)then begin
+	if(r1.destino < r2.destino)then begin
 		min := r1;
         leer(det1, r1)
     end
@@ -88,23 +84,12 @@ begin
     end;
 end; 
 
-procedure agregarAdelante(var L : lista; v : vuelo);
-var
-	nue : lista;
-begin
-	new(nue);
-	nue^.dato := v;
-	nue^.sig := L;
-	L := nue;
-end;
-
-procedure actualizarMaestro(var mae : maestro; var det1, det2 : detalle; var L : lista);
+procedure actualizarMaestro(var mae : maestro; var det1, det2 : detalle);
 var
 	r1, r2, min : info;
 	regM : vuelo;
 	cant : integer;
 begin
-	L := nil;
 	writeln('Ingrese una cantidad de asientos disponibles ');
 	readln(cant);
 	reset(mae);
@@ -128,7 +113,7 @@ begin
 					minimo(det1, det2, r1, r2, min);
 				end;
 				if(regM.cantAsientos < cant)then
-					agregarAdelante(L, regM);
+					writeln('Destino ', regM.destino, ' fecha ', regM.fecha, ' hora de salida ', regM.hora);
 				seek(mae, filepos(mae)-1);
 				write(mae, regM);
 			end;
@@ -147,27 +132,20 @@ begin
 	reset(mae);
 	while(not eof(mae))do begin
 		read(mae, regM);
-		writeln('Destino ', regM.destino, ' fecha ', regM.fecha, ' hora ', regM.hora:0:2, ' asientos disponibles ', regM.cantAsientos);
+		writeln('Destino ', regM.destino, ' fecha ', regM.fecha, ' hora ', regM.hora, ' asientos disponibles ', regM.cantAsientos);
 	end;
 	close(mae);
-end;
-
-procedure imprimirLista(L : lista);
-begin
-	while(L <> nil)do
-		writeln('Destino ', L^.dato.destino, ' fecha ', L^.dato.fecha, ' hora ', L^.dato.hora:0:2, ' asientos disponibles ', L^.dato.cantAsientos);
 end;
 
 var
 	mae : maestro;
 	det1, det2 : detalle;
-	L : lista;
 begin
 	importarMaestro(mae);
 	importarDetalle(det1);
 	importarDetalle(det2);
-	actualizarMaestro(mae, det1, det2, L);
+	actualizarMaestro(mae, det1, det2);
+	writeln('--------------------------------');
+	writeln('Archivo maestro');
 	imprimirMaestro(mae);
-	writeln('---------------------------------');
-	imprimirLista(l);
 end.

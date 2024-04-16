@@ -108,9 +108,8 @@ var
 	vr : vectorR;
 	min, dato : venta;
 	i : rango;
-	max1, min1 : integer;
 	fechaMin, fechaMax : string;
-	codigoMin, codigoMax, totalVentas : integer;
+	codigoMin, codigoMax, max1, min1, totalVentas : integer;
 begin
 	max1 := -1;
 	min1 := 9999;

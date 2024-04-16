@@ -102,9 +102,9 @@ begin
 		leer(vd[pos], vr[pos]);
 end;
 
-procedure actualizarMaestro(var mae : maestro; var vd : vectorD; var motoMax : integer);
+procedure actualizarMaestro(var mae : maestro; var vd : vectorD);
 var
-	max, codigo, ventas: integer;
+	max, codigo, ventas, motoMax: integer;
 	regM : moto;
 	min : venta;
 	vr : vectorR;
@@ -113,6 +113,10 @@ begin
 	max := -1;
 	reset(mae);
 	read(mae, regM);
+	for i := 1 to dimf do begin
+		reset(vd[i]);
+		leer(vd[i], vr[i]);
+	end;
 	minimo(vd, vr, min);
 	while(min.codigo <> valorAlto)do begin
 		codigo := min.codigo;
@@ -134,6 +138,7 @@ begin
 			read(mae, regM);
 	end;
 	writeln('Archivo maestro actualizado');
+	writeln('La moto mas vendida es ', motoMax);
 	close(mae);
 	for i := 1 to dimf do
 		close(vd[i]);
@@ -152,14 +157,12 @@ begin
 end;
 
 var
-	maxMoto : integer;
 	vd : vectorD;
 	mae : maestro;
 BEGIN
 	importarMaestro(mae);
 	cargarVectorDetalles(vd);
-	actualizarMaestro(mae, vd, maxMoto);
+	actualizarMaestro(mae, vd);
 	imprimirMaestro(mae);
-	writeln('El codigo de moto mas vendida es ', maxMoto);
 END.
 
