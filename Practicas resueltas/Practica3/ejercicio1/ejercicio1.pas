@@ -201,38 +201,42 @@ begin
 	close(txtDni);
 end;
 
-procedure buscarEmpleado(var emp : empleado; numero : integer; var pos : integer; var encontre : boolean);
+procedure buscarEmpleado(var emp : archivo; numero : integer; var pos : integer; var encontre : boolean);
 var
 	e : empleado;
-	encontre : boolean;
 begin
-	reset(mae);
+	reset(emp);
 	encontre:= false;
 	pos := 0;
 	while(not eof(emp))and(not encontre)do begin
 		read(emp, e);
 		if(e.numero = numero)then
 			encontre:= true;
-			pos := pos - 1;
 		pos := pos + 1;
 	end;
-	close(mae);
+	close(emp);
 end;
 
-procedure eliminarEmpleado(var emp : empleado);
+procedure eliminarEmpleado(var emp : archivo);
 var
-	numero : integer;
-	e : empleado;
+	numero, pos : integer;
+	e, aux : empleado;
 	encontre : boolean;
 begin
 	writeln('Ingrese el numero de empleado del empleado que desea eliminar ');
 	readln(numero);
 	buscarEmpleado(emp, numero, pos, encontre);
 	if (encontre)then begin
-		reset(mae);
-		seek(mae, filepos(filesize));
-		read(mae, e);
-		
+		reset(emp);
+		seek(emp, filesize(emp)-1);
+		read(emp, e);
+		aux := e;
+		seek(emp, pos-1);
+		write(emp, aux);
+		seek(emp, filesize(emp)-1);
+		truncate(emp);
+		close(emp);
+		writeln('Se ha eliminado el empleado correctamente');
 	end
 	else
 		writeln('El empleado ingresado no existe');
