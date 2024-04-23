@@ -35,21 +35,17 @@ begin
 	close(arch);
 end;
 
-procedure eliminarFlor (var arch : tArchFlores);
+procedure eliminarFlor (var arch : tArchFlores; flor : reg_flor);
 var
 	f, aux : reg_flor;
-	codigo : integer;
 	ok : boolean;
 begin
 	reset (arch);
 	ok := false;
-	write ('INGRESE CODIGO DE LA FLOR QUE DESEA ELIMINAR: '); 
-	readln (codigo);
-	writeln ('');
 	read(arch, aux); 
 	while(not eof(arch) and not ok)do begin
 		read(arch, f);
-		if(f.codigo = codigo)then begin
+		if(f.codigo = flor.codigo)then begin
 			ok := true;
 			seek(arch, filePos(arch)-1);
 			write(arch, aux);
@@ -74,9 +70,10 @@ begin
 	read(a, aux);
 	f.codigo := codigo;
 	f.nombre := nombre;
-	if(aux.codigo = 0)then 
+	if(aux.codigo = 0)then begin 
 		seek(a, filepos(a));
 		write(a, f)
+	end
 	else begin
 		seek(a, aux.codigo *-1);
 		read(a, aux);
@@ -110,12 +107,19 @@ var
 	arch : tArchFlores;
 	nombre : string;
 	codigo : integer;
+	f : reg_flor;
 begin
 	cargarArchivo(arch);
 	imprimirArchivo(arch);
 	writeln('Se eliminaran dos flores para hacer una prueba');
-	eliminarFlor(arch);
-	eliminarFlor(arch);
+	writeln('Ingrese el codigo de la flor a eliminar');
+	readln(codigo);
+	f.codigo := codigo;
+	eliminarFlor(arch, f);
+	writeln('Ingrese el codigo de la flor a eliminar');
+	readln(codigo);
+	f.codigo := codigo;
+	eliminarFlor(arch, f);
 	writeln('--------------------------------------------------');
 	imprimirArchivo(arch);
 	writeln('Ingrese el nombre de la flor que desea agregar');
