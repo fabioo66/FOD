@@ -207,12 +207,11 @@ var
 begin
 	reset(emp);
 	encontre:= false;
-	pos := 0;
 	while(not eof(emp))and(not encontre)do begin
 		read(emp, e);
 		if(e.numero = numero)then
 			encontre:= true;
-		pos := pos + 1;
+			pos := filepos(emp)-1;
 	end;
 	close(emp);
 end;
@@ -220,7 +219,7 @@ end;
 procedure eliminarEmpleado(var emp : archivo);
 var
 	numero, pos : integer;
-	e, aux : empleado;
+	e : empleado;
 	encontre : boolean;
 begin
 	writeln('Ingrese el numero de empleado del empleado que desea eliminar ');
@@ -230,9 +229,8 @@ begin
 		reset(emp);
 		seek(emp, filesize(emp)-1);
 		read(emp, e);
-		aux := e;
-		seek(emp, pos-1);
-		write(emp, aux);
+		seek(emp, pos);
+		write(emp, e);
 		seek(emp, filesize(emp)-1);
 		truncate(emp);
 		close(emp);
