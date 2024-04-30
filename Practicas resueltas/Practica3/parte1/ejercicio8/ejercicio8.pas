@@ -156,7 +156,10 @@ begin
 	seek(arch, 1);
 	while(not eof(arch))do begin
 		read(arch, d);
-		write('Nombre ', d.nombre, ' anio ', d.anio, ' version ', d.version, ' cant desarrolladores ', d.cantDesarrolladores, ' descripcion ', d.descripcion);
+		if(d.anio <= 0)then
+			writeln('Espacio disponible')
+		else
+			writeln('Nombre ', d.nombre, ' anio ', d.anio, ' version ', d.version, ' cant desarrolladores ', d.cantDesarrolladores, ' descripcion ', d.descripcion);
 	end;
 	close(arch); 
 end;
@@ -166,7 +169,9 @@ var
 begin
 	cargarArchivo(arch);
 	imprimirArchivo(arch);
+	writeln('------------------------------------------------------------');
 	bajaDistribucion(arch);
 	altaDistribucion(arch);
+	writeln('--------Archivo luego de las modificaciones-----------------');
 	imprimirArchivo(arch);
 end.
