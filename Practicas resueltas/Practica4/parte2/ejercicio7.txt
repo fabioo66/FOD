@@ -1,0 +1,66 @@
+Dado el siguiente árbol B de orden 5, mostrar cómo quedaría el mismo luego de realizar
+las siguientes operaciones: +320, -390, -400, -533.
+Para la resolución de underflow debe utilizar política a izquierda.
+
+
+                                         2: 0 (220) 1 (390) 4 (455) 5 (541) 3
+
+          0: (10)    1: (225) (241) (331) (360)    4: (400) (407)    5: (508) (533)    3: (690) 823)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
++320
+
+                                                                 8: 2 (390) 7
+
+                                  2: 0 (220) 1 (320) 6                         7: 4 (455) 5 (541) 3
+
+          0: (10)    1: (225) (241)     6: (331) (360)    4: (400) (407)    5: (508) (533)    3: (690) 823)
+
+L2, L1, E6, E1, L2, E7, E2, E8
+
+- Intento agregar la clave 320 en el nodo 1, como esta lleno se produce overflow, se
+  divide, se crea el nuevo nodo 6, se promociona la clave 320, se intenta agregar en
+  el nodo raiz, como esta lleno se produce overflow, se divide, se crea el nuevo nodo 7,
+  se promociona la clave 390, y se crea el nuevo nodo raiz 8
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-390
+
+                                                                 8: 2 (400) 7
+
+                                  2: 0 (220) 1 (320) 6                         7: 4 (455) 5 (541) 3
+
+          0: (10)    1: (225) (241)     6: (331) (360)    4: (407)    5: (508) (533)    3: (690) 823)
+
+L8, L7, L4, E4, E8
+
+- Baja de la clave 390 del nodo 8, se reemplaza por la menor clave de su subarbol derecho,
+  no se produce underflow porque el minimo de elementos es 1
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-400
+
+                                                               8: 2 (407) 7
+
+                                  2: 0 (220) 1 (320) 6                     7: 4 (508) 5 (541) 3
+
+          0: (10)    1: (225) (241)     6: (331) (360)    4: (455)    5: (533)    3: (690) (823)
+
+L8, L7, L4, L5, E4, E5, E7, E8
+
+- Baja de la clave 400 del nodo 8, se reemplaza por la menor clave de su subarbol derecho,
+  se produce underflow, se redistribuye con el nodo 5
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-533
+
+                                                               8: 2 (407) 7
+
+                                  2: 0 (220) 1 (320) 6                     7: 4 (541) 3
+
+          0: (10)    1: (225) (241)     6: (331) (360)    4: (455) (508)   3: (690) (823)
+
+L8, L7, L5, L4, E4, E7
+
+- Baja de la clave 533 del nodo 5, se intenta redistribuir con el nodo 4, como no es posible
+  ya que tiene el minimo de elementos, se fusiona con este, y se libera el nodo 5

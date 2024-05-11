@@ -1,0 +1,63 @@
+10. Dado el siguiente árbol B de orden 5, mostrar cómo quedaría el mismo luego de realizar
+las siguientes operaciones: +450, -485, -511, -614.
+Política de resolución de underflows: derecha.
+
+                       2: 0 (315) 1 (485) 4 (547) 5 (639) 3
+
+0: (148)(223)   1: (333)(390)(442)(454)   4: (508)(511)   5: (614)(633)   3: (789)(915)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
++450
+
+                                  8: 2 (485) 7
+
+                2: 0 (315) 1 (442) 6         7: 4 (547) 5 (639) 3
+
+0: (148)(223)   1: (333)(390)  6: (450)(454)   4: (508)(511)   5: (614)(633)   3: (789)(915)
+
+
+L2, L1, E1, E6, E2, E7, E8
+
+- Intento agregar el 450, hay overflow, promociono el 442 y creo un nodo a la derecha.
+Cuando intento promocionar el 442, hay overflow en la raiz. promociono el 485 y creo el nodo derecho
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-485
+
+                                  8: 2 (508) 7
+
+                2: 0 (315) 1 (442) 6         7: 4 (547) 5 (639) 3
+
+0: (148)(223)   1: (333)(390)  6: (450)(454)   4: (511)   5: (614)(633)   3: (789)(915)
+
+L8, L7, L4, E4, E8
+
+- Baja de la clave 485 del nodo 8, se reemplaza por la menor clave de su subarbol derecho,
+no se produce underflow porque el minimo de elementos es 1.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-511
+
+                                  8: 2 (508) 7
+
+                2: 0 (315) 1 (442) 6         7: 4 (614) 5 (639) 3
+
+0: (148)(223)   1: (333)(390)  6: (450)(454)   4: (547)   5: (633)   3: (789)(915)
+
+L8, L7, L4, E4, L5, E5, E7
+
+- Intento eliminar el 511, como hay underflow, redistribuyo con el hermano adyacente derecho.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-614
+
+                                  8: 2 (508) 7
+
+                2: 0 (315) 1 (442) 6         7: 4 (633) 5 (789) 3
+
+0: (148)(223)   1: (333)(390)  6: (450)(454)   4: (547)   5: (639)   3: (915)
+
+L8, L7, L5, E7, L3, E3, E5, E7
+
+- Intento eliminar la clave 614 --> reemplazo la menor clave del subarbol derechp (633), pero esta clave da underflow.
+Redistribuyo con el hermano derecho.
