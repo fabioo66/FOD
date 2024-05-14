@@ -1,0 +1,42 @@
+16. Dado el siguiente árbol B + de orden 4 y con política de resolución de underflows a
+derecha, realice las siguientes operaciones indicando lecturas y escrituras en el orden
+de ocurrencia. Además, debe describir detalladamente lo que sucede en cada
+operación. +80, -400.
+  
+                       4: 0 (340) 1 (400) 2 (500) 3
+
+0: (11)(50)(77) 1    1: (340)(350)(360) 2   2: (402)(410)(420) 3   3: (520)(530) -1
+
+//Overflow en arbol b: 
+// nodos internos igual que arbol b. Nodos terminales promociono la copia y queda el original en la hoja.
+
+--------------------------------------------------------------------------------------------------
++80
+
+                                    7: (400)
+
+                       4: 0 (77) 5 (340) 1    6: 2 (500) 3
+
+0: (11)(50) 1   5: (77)(80) 1    1: (340)(350)(360) 2   2: (402)(410)(420) 3   3: (520)(530) -1
+
+L4, L0, E0, E5, E4, E6, E7
+                                                                       |
+- Intento agregar la clave 80 en el nodo 0. Como hay overflow [11][50] 77 [77][80]. Como es una hoja guardo el valor en el 
+nuevo nodo creado (5) y promociono una copia.         |
+- Cuando promociono la copia, overflow --> [77][340] 400 [500]. Como es un nodo interno promociono el 400 y creo un nuevo nodo.
+
+--------------------------------------------------------------------------------------------------
+-400
+
+                                    7: (400)
+
+                       4: 0 (77) 5 (340) 1    6: 2 (500) 3
+
+0: (11)(50) 1   5: (77)(80) 1    1: (340)(350)(360) 2   2: (402)(410)(420) 3   3: (520)(530) -1
+
+L7, L6, L2
+
+- Como el 400 no se encuentra en un nodo terminal NO debo eliminarlo.
+
+
+

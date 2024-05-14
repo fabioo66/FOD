@@ -1,0 +1,200 @@
+17. Dado el siguiente árbol B+ de orden 4, mostrar como quedaría el mismo luego de
+realizar las siguientes operaciones: +120, +110, +52, +70, +15, -45, -52, +22, +19, -66, -22,
+-19, - 23, -89.
+
+Política de resolución de underflows: derecha.
+                 
+                    2: 0 (66) 1
+
+           0: (23)(45) 1   1: (66) (67) (89)
+
+--------------------------------------------------------------------------------------------------
++120
+
+                        2: 0 (66) 1 (89) 3
+
+           0: (23)(45) 1    1: (66)(67) 3   3: (89)(120) -1
+
+L2, L1, E1, E2, E3
+                                                                                           
+- Intento agregar la clave 120 en el nodo 1.  |
+Como hay overflow EN UN NODO HOJA--> [66][67] 89 [89][120]
+
+--------------------------------------------------------------------------------------------------
++110
+
+                        2: 0 (66) 1 (89) 3
+
+           0: (23)(45) 1    1: (66)(67) 3   3: (89)(110)(120) -1
+
+L2, L3, E3
+
+- Agrego la clave 110 en el nodo 3 sin problema.
+
+--------------------------------------------------------------------------------------------------
++52
+
+                          2: 0 (66) 1 (89) 3
+
+           0: (23)(45)(52) 1    1: (66)(67) 3   3: (89)(110)(120) -1
+
+L2, L0, E0
+
+- Agrego la clave 52 en el nodo 0 sin problema.
+
+--------------------------------------------------------------------------------------------------
++70
+
+                          2: 0 (66) 1 (89) 3
+
+           0: (23)(45)(52) 1    1: (66)(67)(70) 3   3: (89)(110)(120) -1
+
+L2, L1, E1
+
+- Agrego la clave 70 en el nodo 1 sin problema.
+
+--------------------------------------------------------------------------------------------------
++15
+
+                            2: 0 (45) 4 (66) 1 (89) 3
+
+           0: (15)(23) 4   4: (45)(52) 1    1: (66)(67)(70) 3   3: (89)(110)(120) -1
+
+L2, L0, E0, E4, E2
+
+- Intento agregar la clave 15 en el nodo 0.   |
+Como hay overflow EN UN NODO HOJA--> [15][23] 45 [45][52].
+Creo un nuevo nodo, almaceno la mitad de la derecho en ese nodo y promociono la copia.
+
+--------------------------------------------------------------------------------------------------
+-45
+
+                            2: 0 (45) 4 (66) 1 (89) 3
+
+           0: (15)(23) 4   4: (52) 1    1: (66)(67)(70) 3   3: (89)(110)(120) -1
+
+L2, L4, E4
+
+- Elimino la clave 45 sin problema.
+
+--------------------------------------------------------------------------------------------------
+-52
+
+                            2: 0 (45) 4 (67) 1 (89) 3
+
+           0: (15)(23) 4   4: (66) 1    1: (67)(70) 3   3: (89)(110)(120) -1
+
+L2, L4, L1, E4, E1, E2 // de abajo para arriba de izquierda a derecha.
+// Si en la redistribucion, el padre no nos sirve mas, lo reemplazamos.
+
+- Intento eliminar la clave 52 del nodo 4, no puedo porque esta en underflow. Puedo redistribuir con
+                                    |
+el de la derecha, entonces --> [66] 67 [67][70]
+- Queda en overflow la raiz, pero como el 66 no nos sirve mas como separador, lo reemplazamos.
+
+--------------------------------------------------------------------------------------------------
++22
+
+                            2: 0 (45) 4 (67) 1 (89) 3
+
+           0: (15)(22)(23) 4   4: (66) 1    1: (67)(70) 3   3: (89)(110)(120) -1
+
+L2, L0, E0
+
+- Agrego la clave 22 en el nodo 0 sin problema.
+
+--------------------------------------------------------------------------------------------------
++19
+
+                                        7: 2 (67) 6
+
+                           2: 0 (22) 5 (45) 4       6:  1 (89) 3
+
+           0: (15)(19) 5    5: (22)(23) 4   4: (66) 1    1: (67)(70) 3   3: (89)(110)(120) -1
+
+L2, L0, E0, E5, E6, E7
+
+- Intento agregar la clave 19 en el nodo 0. Como hay overflow en la raiz --> 
+         |
+[15][19] 22 [22][23]
+                                            |
+- Como hay overflow en la raiz --> [22][45] 67 [89]
+
+--------------------------------------------------------------------------------------------------
+-66
+
+                                        7: 2 (67) 6
+
+                           2: 0 (22) 5 (23) 4       6:  1 (89) 3
+
+           0: (15)(19) 5    5: (22) 4   4: (23) 1    1: (67)(70) 3   3: (89)(110)(120) -1
+
+L7, L2, L4, L5, E4, E5, E2 
+
+- Intento eliminar la clave 66 del nodo 4, como hay underflow, reedistribuyo con el hermano izquierda.
+     |
+[22] 23 [23]. Promociono el 23 y reemplazo el separador 45 que no me sirve mas.
+
+--------------------------------------------------------------------------------------------------
+-22
+
+                                        7: 2 (67) 6
+
+                             2: 0 (23) 5       6:  1 (89) 3
+
+           0: (15)(19) 5    5: (23) 1    1: (67)(70) 3   3: (89)(110)(120) -1
+
+L7, L2, L5, L4, E4, E5, E2
+
+- Intento eliminar la clave 22 del nodo 5, como no puedo porque hay underflow, intento redistribuir.
+Como tampoco puedo redistribuir, fusiono con el hermano derecho. 
+
+--------------------------------------------------------------------------------------------------
+-19
+
+                                        7: 2 (67) 6
+
+                             2: 0 (23) 5       6:  1 (89) 3
+
+           0: (15) 5    5: (23) 1    1: (67)(70) 3   3: (89)(110)(120) -1
+
+L7, L2, L0, E0
+
+- Elimino la clave 19 del nodo 0 sin problema.
+
+--------------------------------------------------------------------------------------------------
+-23
+
+                                2: 0 (23) 1 (89) 3
+
+                     0: (15) 1   1: (67)(70) 3   3: (89)(110)(120) -1
+
+L7, L2, L5, L0, E5, E0, E2, L6, E6, E7
+
+- Intento eliminar la clave 23, como hay underflow, intento redistribuir con el hermano derecho.
+Como no tengo hermano derecho y tampoco puedo redistribuir con el hermano izquierdo, fusiono.
+Cuando fusiono, se me propaga el underflow hasta el nodo 2. Fusiono el con el nodo 6 y baja en 1 la altura del arbol.
+
+--------------------------------------------------------------------------------------------------
+-89
+
+                                2: 0 (23) 1 (89) 3
+
+                     0: (15) 1   1: (67)(70) 3   3: (110)(120) -1
+
+L2, L3, E3 
+
+- Elimino la clave 89 del nodo 3 sin problema.
+
+
+
+
+
+
+
+
+
+
+
+
+
