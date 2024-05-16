@@ -1,0 +1,57 @@
+24. Dado un árbol B+ de orden 5 y con política izquierda o derecha, para cada operación
+dada:
+a. Dibuje el árbol resultante
+b. Explique detalladamente las decisiones tomadas
+c. Escriba las lecturas y escrituras
+Operaciones: +250, -300, -40
+Árbol: 
+
+                                             nodo 8: 1 i 2(70)7
+
+                           nodo2:1 i 0(50)4                       nodo7: 4 i 5(90)6(120)3(210)9(300)1
+
+nodo 0: 1 h(40)->4    nodo 4: 1 h(50)->5  nodo 5: 2 h(70)(80)->6  nodo 6: 2 h(90)(100)->3  nodo 3: 2 h(120)(200)->9  nodo 9: 4 h(210)(220)(230)(240)->1   nodo 1: 2 h(400)(500)-> -1
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
++250
+
+                                            8: 2 (70) 7 (210) 11
+
+                           2: 0 (50) 4                       7: 5 (90) 6 (120) 3    11: 9 (230) 10 (300) 1
+
+0: (40) 4    4: (50) 5   5: (70)(80) 6  6: (90)(100) 3  3: (120)(200) 9  9: (210)(220) 10    10: (230)(240)(250) 1   1: (400)(500) -1
+
+L8, L7, L9, E9, E10, E7, E7, E11, E8 
+                                                                                      |
+- Intento agregar la clave 250, como hay overflow en un nodo terminal --> [210][220] 230 [240][250]
+                                                                              |
+- Esto me propaga overflow en el nodo interno 7, por lo tanto --> [90][120]  210 [300][400]
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+-300
+
+                                            8: 2 (70) 7 (210) 11
+
+                           2: 0 (50) 4                       7: 5 (90) 6 (120) 3    11: 9 (230) 10 (300) 1
+
+0: (40) 4    4: (50) 5   5: (70)(80) 6  6: (90)(100) 3  3: (120)(200) 9  9: (210)(220) 10    10: (230)(240)(250) 1   1: (400)(500) -1
+
+L8, L11, L1,
+
+- Como el nodo no existe (no se encuentra en los nodos terminales) no lo elimino.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+-40
+
+                                            8: 2 (90) 7 (210) 11
+
+                           2: 0 (70) 5                       7:  6 (120) 3    11: 9 (230) 10 (300) 1
+
+0: (50) 5   5: (70)(80) 6  6: (90)(100) 3  3: (120)(200) 9  9: (210)(220) 10    10: (230)(240)(250) 1   1: (400)(500) -1
+
+L8, L2, L0, L4, E0, E4, E2, L7, E2, E7, E8 
+
+- Intento eliminar el 40, como esta en underflow y no puedo redistribuir, fusiono con el hermano derecho.
+- Esto me propaga un underflow en el nodo 2, por lo tanto redistribuyo con el hermano 7.
+
+
