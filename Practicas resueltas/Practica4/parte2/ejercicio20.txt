@@ -1,0 +1,41 @@
+20. Dado el siguiente árbol B+ de orden 4, mostrar cómo quedaría definido el árbol luego
+de realizar las siguientes operaciones: -56, -23, -1.
+
+                   2: 0 (56) 1
+
+        0: (1)(23) 1      1: (56) (75) (107)
+
+---------------------------------------------------------------------------------------------------------------------
+-56
+
+                 2: 0 (56) 1
+
+    0: (1)(23) 1         1: (75) (107) 
+
+L2, L1, E1 
+
+- Elimino la clave 56 sin problema 
+
+---------------------------------------------------------------------------------------------------------------------
+-23
+
+            2: 0 (56) 1
+
+    0: (1) 1         1: (75) (107) 
+
+L2, L0, E0 
+
+- Elimino la clave 56 sin problema 
+
+---------------------------------------------------------------------------------------------------------------------
+-1
+
+            2: 0 (107) 1
+
+    0: (75) 1         1: (107) 
+
+L2, L0, L1, E0, E1, E2 
+
+- Intento eliminar la clave 1, como hay underflow, redistribuyo con el hermano derecho.
+- Como el separador 56 no me sirve mas, lo reemplazo por la copia de la clave 107.
+
