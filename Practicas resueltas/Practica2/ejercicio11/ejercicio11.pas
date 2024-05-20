@@ -1,4 +1,49 @@
-program ejercicio11;
+{11. La empresa de software ‘X’ posee un servidor web donde se encuentra alojado el sitio web
+de la organización. En dicho servidor, se almacenan en un archivo todos los accesos que se
+realizan al sitio. La información que se almacena en el archivo es la siguiente: año, mes, día,
+idUsuario y tiempo de acceso al sitio de la organización. El archivo se encuentra ordenado
+por los siguientes criterios: año, mes, día e idUsuario.
+Se debe realizar un procedimiento que genere un informe en pantalla, para ello se indicará
+el año calendario sobre el cual debe realizar el informe. El mismo debe respetar el formato
+mostrado a continuación:
+Año : ---
+    Mes:-- 1
+        día:-- 1
+            idUsuario 1 Tiempo Total de acceso en el dia 1 mes 1
+            --------
+            idusuario N Tiempo total de acceso en el dia 1 mes 1
+        Tiempo total acceso dia 1 mes 1
+        -------------
+        día N
+            idUsuario 1 Tiempo Total de acceso en el dia N mes 1
+            --------
+            idusuario N Tiempo total de acceso en el dia N mes 1
+        Tiempo total acceso dia N mes 1
+    Total tiempo de acceso mes 1
+        ------
+    Mes 12
+        día 1
+            idUsuario 1 Tiempo Total de acceso en el dia 1 mes 12
+            --------
+            idusuario N Tiempo total de acceso en el dia 1 mes 12
+        Tiempo total acceso dia 1 mes 12
+        -------------
+        día N
+            idUsuario 1 Tiempo Total de acceso en el dia N mes 12
+            --------
+            idusuario N Tiempo total de acceso en el dia N mes 12
+        Tiempo total acceso dia N mes 12
+    Total tiempo de acceso mes 12
+Total tiempo de acceso año
+Se deberá tener en cuenta las siguientes aclaraciones:
+● El año sobre el cual realizará el informe de accesos debe leerse desde el teclado.
+● El año puede no existir en el archivo, en tal caso, debe informarse en pantalla “año
+no encontrado”.
+● Debe definir las estructuras de datos necesarias.
+● El recorrido del archivo debe realizarse una única vez procesando sólo la información
+necesaria.}
+
+program parcial_2018;
 const
 	valorAlto = 9999;
 type
@@ -32,80 +77,80 @@ begin
     close(usuario);
     close(txt);
 end;
-	
+
 procedure leer(var usuario : archivo; var u : user);
 begin
-    if (not eof(usuario)) then
+    if(not eof(usuario)) then
         read(usuario, u)
-    else 
+    else
         u.anio := valorAlto;
-end; 
-
-function esta(var usuario : archivo; anio : integer): boolean;
-var
-	encontre : boolean;
-	u : user;
-begin
-	encontre := false;
-	while(not eof(usuario))and(not encontre)do begin
-		read(usuario, u);
-		if(anio = u.anio)then
-			encontre := true;
-	end;
-	esta := encontre;
 end;
 
-procedure procesar(var usuario : archivo);
-var
-	u : user;
-	anio, mes, dia, id : integer;
-	tiempoTotalAnio, tiempoTotalMes, tiempoTotalDia, tiempoTotalId : real;
+function esta(var usuario : archivo; anio : integer) : boolean;
+var 
+    u : user;
+    ok : boolean;
 begin
+    ok := false;
+    read(usuario, u);
+    while(not eof(usuario) and not ok)do begin
+        if(u.anio = anio)then
+            ok := true
+        else
+            read(usuario, u);
+    end;
+    esta := ok;
+end;
+
+procedure informe(var usuario : archivo);
+var
+    u : user;
+    anio, mes, dia, id : integer;
+    tiempoTotalDia, tiempoTotalMes, tiempoTotalAnio, tiempoTotalId : real;
+begin 
 	reset(usuario);
-	writeln('Ingrese el año que desea imprimir');
-	readln(anio);
-	if(esta(usuario, anio))then begin
-		leer(usuario, u);
-		while(u.anio <> valorAlto)do begin
-			writeln('Año ', u.anio);
-			tiempoTotalAnio := 0;
-			anio := u.anio;
-			while(u.anio = anio)do begin
-				writeln('Mes ', u.mes);
-				tiempoTotalMes := 0;
-				mes := u.mes;
-				while(u.anio = anio)and(u.mes = mes)do begin
-					writeln('Dia', u.dia);
-					tiempoTotalDia := 0;
-					dia := u.dia;
-					while(u.anio = anio) and (u.mes = mes)and(u.dia = dia) do begin
-						writeln('Id de usuario ', u.id);
-						tiempoTotalId := 0;
-						id := u.id;
-						while(u.anio = anio) and (u.mes = mes)and(u.dia = dia) and (u.id = id) do begin
-							tiempoTotalId := tiempoTotalId + u.tiempo;
-							leer(usuario, u);
-						end;
-						writeln('Tiempo total de acceso id ', id, ' = ', tiempoTotalId:0:2);
-						tiempoTotalDia := tiempoTotalDia + tiempoTotalId;
+    writeln('Ingrese el año en el que desea ver el informe');
+    readln(anio);
+    if(esta(usuario, anio))then begin
+        leer(usuario, u);
+        writeln('Año : ', u.anio);
+        tiempoTotalAnio := 0;
+        anio := u.anio;
+        while(u.anio = anio)do begin
+			writeln('    Mes : ', u.mes);
+            tiempoTotalMes := 0;
+            mes := u.mes;
+            while(u.anio = anio) and (u.mes = mes)do begin
+				writeln('        Dia : ', u.dia);
+				tiempoTotalDia := 0;
+				dia := u.dia;
+				while(u.anio = anio) and (u.mes = mes)and(u.dia = dia) do begin
+					tiempoTotalId := 0;
+					id := u.id;
+					while(u.anio = anio) and (u.mes = mes)and(u.dia = dia) and (u.id = id) do begin
+						tiempoTotalId := tiempoTotalId + u.tiempo;
+						leer(usuario, u);
 					end;
-					writeln('Tiempo total dia ', tiempoTotalDia:0:2);
-					tiempoTotalMes := tiempoTotalMes + tiempoTotalDia;
+					writeln('            idUsuario ', id, ' Tiempo Total de acceso en el dia ', dia, ' mes ', mes, ' = ', tiempoTotalId:0:2);
+					tiempoTotalDia := tiempoTotalDia + tiempoTotalId;
 				end;
-				writeln('Tiempo total mes ', tiempoTotalMes:0:2);
-				tiempoTotalAnio := tiempoTotalAnio + tiempoTotalMes;
+				writeln('        Tiempo total acceso dia ', dia, ' mes ', mes, ' = ', tiempoTotalDia:0:2);
+				tiempoTotalMes := tiempoTotalMes + tiempoTotalDia;
 			end;
-			writeln('Tiempo total año ', tiempoTotalAnio:0:2);
-		end;
+			writeln('    Total tiempo de acceso mes ', mes, ' = ', tiempoTotalmes:0:2);
+			tiempoTotalAnio := tiempoTotalAnio + tiempototalMes;
+		end;		
+		writeln('Total tiempo de acceso año = ', tiempoTotalAnio:0:2);	
 	end
 	else
-		writeln('No se encontro ningun año que coincida con el ingresado');
+		writeln('El año ingresado no existe');
 	close(usuario);
 end;
+	
 
 var
 	usuario : archivo;
 BEGIN
 	importarUsuario(usuario);
-	procesar(usuario);
-END.
+	informe(usuario);
+END.				
