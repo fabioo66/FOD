@@ -1,8 +1,9 @@
 ## Resumen orientado a la practica de FOD
 
 <p align="center">
-  <img src= "https://i.postimg.cc/Dycxsym5/kanye.jpg" alt = "GOAT"/>
+  <img src="https://i.postimg.cc/Dycxsym5/kanye.jpg" alt="GOAT" width="300" height="400" />
 </p>
+
 
 ### Practica 1 introduccion a archivos 
 
