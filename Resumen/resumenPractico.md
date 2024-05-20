@@ -796,41 +796,60 @@ se intenta redistribuir con el hermano adyacente izquierdo, si no es posible,  s
 ##### Política derecha o izquierda: 
 se intenta redistribuir con el hermano adyacente derecho, si no es posible,  se intenta con el hermano adyacente izquierdo, si tampoco es posible, se fusiona con hermano adyacente derecho.
 
-##### Ejemplo de redistribucion y fusion (politica derecha)
+##### Ejemplo de redistribucion y fusion (politica izquierda)
 **Arbol inicial**:
 
-    	        	      7: 2 (96) 6
+                                7: 2 (30) 6
 
-    	        2: 0 (55) 3 (75) 4     6: 1 (120) 5
+                    2: 0 (10) 1 (23) 5      6: 4 (60) 3
 
-    0: (20)(25)  3: (65)(70)(73)  4: (89)   1: (100)(110)   5: (130)
+        0: (5)    1: (15)(20)   5: (25)   4: (42)(48)     3: (70)
 
-------------------------------------------------------------------------------------------------------
--120
+------------------------------------------------------------------------------------------    
+-30
 
-                          7: 2 (96) 6
+                                7: 2 (42) 6
 
-                2: 0 (55) 3 (75) 4     6: 1 (110) 5
+                    2: 0 (10) 1 (23) 5      6: 4 (60) 3
 
-    0: (20)(25)  3: (65)(70)(73)  4: (89)   1: (100)   5: (130)
+        0: (5)    1: (15)(20)   5: (25)   4: (48)     3: (70)
 
-- Reemplazo la clave 120 con la menor clave de su subarbol derecho. 
-- Como esta queda en underflow, redistribuyo con el hermano izquierda.
+L7, L6, L4, E4, E7 
 
-------------------------------------------------------------------------------------------------------
--110
+- Reemplazo la clave 30 por la menor clave de su subarbol derecho (42). La clave 42 se elimina
+del nodo 4 
 
-                    7: 2 (75) 6
+------------------------------------------------------------------------------------------    
+-5
 
-               2: 0 (55) 3      6: 4 (96) 1
+                                7: 2 (42) 6
 
-    0: (20)(25)  3: (65)(70)(73)  4: (89)   1: (100)(130)
+                    2: 0 (15) 1 (23) 5      6: 4 (60) 3
 
-L7, L6, E5, E6, L1, E1, L2, E2, E6, E7
+        0: (10)    1: (20)   5: (25)   4: (48)     3: (70)
 
-- Reemplazo la clave 110 por la menor clave de su subarbol derecho.
-- Como este queda en underflow y no puedo redistribuir, fusiono con el hermano izquierdo.
-- Esta funcion me propaga un underflow en el nodo 6. Redistribuyo con el hermano izquierdo.
+L7, L2, L0, E0, E1, E2 
+
+- Intento eliminar la clave 5, como el nodo tiene el minimo de elementos, se produce underflow.
+No me sirve la politica izquierda ya que no tengo hermano izquierdo, por lo tanto redistribuyo
+con el hermano derecho. bajo el padre (10) al nodo 0 y subo el 15 como padre.
+
+------------------------------------------------------------------------------------------    
+-48
+
+                        7: 2 (23) 6
+
+                2: 0 (15) 1       6: 5 (42) 4
+
+           0: (10)    1: (20)   5: (25)   4: (70)
+
+L7, L6, L4, L3, E4, E3, E6, L2, E2, E6, E7
+
+- Intento eliminar la clave 48 del nodo 4, como el nodo tiene el minimo de elementos, se
+produce underflow. Como no tengo hermano izquierdo, intento redistribuir con el hermano 
+derecho. Como este tambien tiene el minimo de elementos, fusiono. En la fusion se elimina
+siempre el nodo de la derecha.
+- Esta fusion me propaga underflow en el nodo 6, asi que redistribuyo con el nodo 2.
 
 **Muchisimos mas ejemplos [here](https://github.com/fabioo66/FOD/tree/main/Practicas%20resueltas/Practica4/parte2)**
 
