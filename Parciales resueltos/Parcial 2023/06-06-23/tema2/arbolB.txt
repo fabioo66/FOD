@@ -1,0 +1,72 @@
+Dado  un  ábol B de  orden  4 y con  política  derecha  para  la  resolución  de  underflow,  para  cada 
+operación  dada debe: 
+a. Dibujar  el árbol resultante. 
+b. Explicar  las  decisiones tomadas. 
+c. Indicar  las  lecturas y escrituras en  el  orden  de ocurrencia. 
+Las  operaciones a realizar son:  +260,  -310,  -490,  -60 
+Arbol  inicial: 
+ 
+                2:  0 (100) 1 (310) 4 (600) 3
+
+    0:  (60)     1:(160)(210)(240)      4: (420)(490)  3:  (800)
+
+-------------------------------------------------------------------------------------------------------
++260
+
+                                7: 2 (310) 6
+
+                2: 0 (100) 1 (240) 5     6: 4 (600) 3
+
+    0:  (60)     1:(160)(210)    5: (260)      4: (420)(490)  3:  (800)
+
+L2, L1, E1, E5, E2, E6, E7 
+
+- Intento agregar la clave 260 en el nodo 1, como hay overflow, divido el nodo, creando uno nuevo.
+La menor clave de la mitade de la derecha se promociona a la raiz.
+- Esto me propaga un overflow en la raiz, asi que aplico el mismo procedimiento.
+
+-------------------------------------------------------------------------------------------------------
+-310
+
+                                7: 2 (420) 6
+
+                2: 0 (100) 1 (240) 5     6: 4 (600) 3
+
+    0: (60)     1:(160)(210)    5: (260)      4: (490)  3:  (800)
+
+L7, L6, L4, E4, E7
+
+- Reemplazo la clave 310 con la menor clave de su subarbol derecho (420) y elimino dicha clave del nodo 4
+
+-------------------------------------------------------------------------------------------------------
+-490
+
+                        7: 2 (240) 6
+
+                2: 0 (100) 1       6: 5 (420) 4
+
+    0: (60)     1:(160)(210)    5: (260)      4: (600)(800)
+
+L7, L6, L4, L3, E4, E3, E2, E6, E7 
+
+- Intento eliminar la clave 490 del nodo 4, como esta queda en underflow intento redistribuir con el 
+hermano derecho, como no puedo, fusiono. 
+- Bajo la clave 600, esto me propaga underflow en el nodo 6. Como no tengo hermano derecho, redistribuyo
+con el hermano izquierdo.
+
+-------------------------------------------------------------------------------------------------------
+-60
+
+                        7: 2 (240) 6
+
+                2: 0 (160) 1       6: 5 (420) 4
+
+    0: (100)     1: (210)    5: (260)      4: (600)(800)
+
+L7, L2, L0, L1, E0, E1, E2 
+
+- Intento eliminar la clave 60 del nodo del nodo 0, como no puedo como hay underflow, redistribuyo con
+el hermano derecho.
+
+
+
