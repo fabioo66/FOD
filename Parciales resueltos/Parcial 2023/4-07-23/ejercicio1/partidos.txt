@@ -1,0 +1,12 @@
+1 2 10 3 1 3 Boca Juniors
+2023
+1 3 10 1 0 3 Boca Juniors
+2023
+2 1 10 1 3 0 River Plate
+2023
+2 3 10 2 1 3 River Plate
+2023
+3 1 10 0 1 0 Velez
+2023
+3 2 10 1 2 0 Velez
+2023

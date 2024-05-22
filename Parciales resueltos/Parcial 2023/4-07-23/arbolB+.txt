@@ -1,0 +1,63 @@
+Dado un arbol B+ de orden 4 y con politica derecha, realice las siguientes operaciones:
+operaciones:
++58, -403, +260, -550
+
+                         4: 0 (240) 1 (403) 2 (500) 3
+
+    0: (3)(45)(60) 1    1: (240)(255)(360) 2    2: (409)(420) 3     3: (550) -1
+
+----------------------------------------------------------------------------------------------
++58
+
+                                       7: 4 (403) 6
+
+                         4: 0 (58) 5 (240) 1    6: 2 (500) 3
+
+    0: (3)(45) 5   5: (58)(60) 1    1: (240)(255)(360) 2    2: (409)(420) 3     3: (550) -1
+
+L4, L0, E0, E5, E4, E6, E7
+
+- Intento agregar la clave 58 en el nodo 0, como hay overflow en un nodo terminal, divido el 
+nodo en dos. En el nodo 5 (el nuevo) me queda 58 y 60 y promociono la copia del 58.
+- Esto me propaga overflow en la raiz, como es un nodo interno, lo resuelvo como arbol B.
+Divido el nodo, me queda 500 en el nuevo nodo y promociono el 403.
+
+----------------------------------------------------------------------------------------------
+-403
+
+                                       7: 4 (403) 6
+
+                         4: 0 (58) 5 (240) 1    6: 2 (500) 3
+
+    0: (3)(45) 5   5: (58)(60) 1    1: (240)(255)(360) 2    2: (409)(420) 3     3: (550) -1
+
+L7, L6 
+
+- No puedo eliminar la clave 403 ya que no se encuentra en un nodo terminal.
+
+----------------------------------------------------------------------------------------------
++260
+
+                                           7: 4 (403) 6
+
+                         4: 0 (58) 5 (240) 1 (260) 8        6: 2 (500) 3
+
+    0: (3)(45) 5   5: (58)(60) 1    1: (240)(255) 8   8: (260)(360) 2    2: (409)(420) 3     3: (550) -1
+
+L7, L4, L1, E1 E8, E4
+                                                                                              |
+- Intento agregar la clave 260 en el nodo 1, como hay overflow en un nodo interno [240][255] 260 [260][360]
+
+----------------------------------------------------------------------------------------------
+-550
+
+                                        7: 4 (403) 6
+
+                         4: 0 (58) 5 (240) 1 (260) 8   6: 2 (420) 3
+
+    0: (3)(45) 5   5: (58)(60) 1    1: (240)(255) 8   8: (260)(360) 2    2: (409) 3     3: (420) -1
+
+L7, L6, L3, L2, E2, E3, E6
+
+- Intento eliminar el 550 del nodo 3, como hay underflow, redistribuyo con el hermano izquierdo.
+- Como el separador padre no me sirve mas, lo reemplazo por el 420.

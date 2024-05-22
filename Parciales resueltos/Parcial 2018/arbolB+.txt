@@ -1,0 +1,101 @@
+Dado un arbol B+ de orden 4 con politica de underflow derecha.
+Operaciones:
++100, -540, -67, -422, -445, -556
+
+Arbol inicial:
+
+                            2: 0 (241) 1 (422) 3 (540) 4
+
+        0: (3)(35)(67) 1    1: (241)(300)(329) 3    3: (422)(445) 4     4: (556)(600) -1
+
+-------------------------------------------------------------------------------------------------------
++100
+
+                                    7: 2 (422) 6
+
+                        2: 0 (67) 5 (241) 1     6: 3 (540) 4
+
+        0: (3)(35) 5    5: (67)(100) 1    1: (241)(300)(329) 3    3: (422)(445) 4     4: (556)(600) -1
+        
+L2, L0, E0, E5, E2, E6, E7 
+                                                                                       |
+- Intento agregar la clave 100 en el nodo 0, como hay overflow, divido el nodo [3][35] 67 [67][100]
+Creo el nodo 5 con las claves 67 y 100 y promociono la copia del 67.
+- Esto me propaga un overflow en la raiz, como es un nodo interno, lo resuelvo como arbol B. 
+
+-------------------------------------------------------------------------------------------------------
+-540
+
+                                    7: 2 (422) 6
+
+                        2: 0 (67) 5 (241) 1     6: 3 (540) 4
+
+        0: (3)(35) 5    5: (67)(100) 1    1: (241)(300)(329) 3    3: (422)(445) 4     4: (556)(600) -1
+
+L7, L6, L4
+
+- No puedo eliminar el nodo 540 ya que no se encuentra en un nodo terminal.
+
+-------------------------------------------------------------------------------------------------------
+-67
+
+                                    7: 2 (422) 6
+
+                        2: 0 (67) 5 (241) 1     6: 3 (540) 4
+
+        0: (3)(35) 5    5: (100) 1    1: (241)(300)(329) 3    3: (422)(445) 4     4: (556)(600) -1
+
+L7, L2, L5, E5
+
+- Elimino la clave 67 del nodo 5 sin problema.
+
+-------------------------------------------------------------------------------------------------------
+-422
+
+                                    7: 2 (422) 6
+
+                        2: 0 (67) 5 (241) 1     6: 3 (540) 4
+
+        0: (3)(35) 5    5: (100) 1    1: (241)(300)(329) 3    3: (445) 4     4: (556)(600) -1
+
+L7, L6, L3, E3 
+
+- Elimino la clave 422 del nodo 3 sin problema.
+
+-------------------------------------------------------------------------------------------------------
+-445
+
+                                    7: 2 (422) 6
+
+                        2: 0 (67) 5 (241) 1     6: 3 (600) 4
+
+        0: (3)(35) 5    5: (100) 1    1: (241)(300)(329) 3    3: (556) 4     4: (600) -1
+
+L7, L6, L3, L4, E3, E4, E6 
+
+- Intento eliminr la clave 445 del nodo 3, como hay underflow, redistribuyo con el nodo 4.
+Como el separador del nodo 6 no me sirve mas, lo reemplazo por el 600.
+
+-------------------------------------------------------------------------------------------------------
+-556
+
+                                    7: 2 (241) 6
+
+                           2: 0 (67) 5          6: 1 (422) 3
+
+           0: (3)(35) 5    5: (100) 1    1: (241)(300)(329) 3    3: (600) -1
+
+L7, L6, L3, L4, E3, E4, L2, E2, E6, E7
+
+- Intento eliminar la clave 556 del nodo 3, como hay underflow, intento redistribuir con el hermano
+derecho. Como no puedo porque tiene el minimo de claves, fusiono con el hermano derecho.
+- Esto me propaga un underflow en el nodo 6, por lo tanto redistribuyo con el hermano izquierdo.
+- Reacomodo los enlaces.
+
+
+
+                            
+
+
+
+
