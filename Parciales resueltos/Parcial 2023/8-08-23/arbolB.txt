@@ -1,0 +1,78 @@
+Dado un arbol B de orden 4 con politica derecha o izquierda, realice las siguientes operaciones:
++410, -200, -500, -100
+
+Arbol inicial: 
+
+                2: 0 (100) 4 (300) 1 (600) 3
+
+    0: (10)     4: (200)    1: (400)(450)(500)     3: (700)
+
+-------------------------------------------------------------------------------------------------
++410
+
+                            7: 2 (450) 6
+
+                2: 0 (100) 4 (300) 1        6: 5 (600) 3
+
+    0: (10)     4: (200)    1: (410)(400)       5: (500)     3: (700)
+
+L2, L1, E1, E5, E2, E6, E7
+
+- Intento agregar la clave 410 en el nodo 1, como hay overflow, divido el nodo y creo uno nuevo. 
+Promociono la menor clave de la mitad de la derecha.
+- Esta promocion del nodo 450 me propaga el overflow en la raiz, por lo tanto realizo el mismo 
+procedimiento.
+
+-------------------------------------------------------------------------------------------------
+-200
+
+                            7: 2 (450) 6
+
+                2: 0 (100) 4 (400) 1        6: 5 (600) 3
+
+    0: (10)     4: (300)    1: (410)       5: (500)     3: (700)
+
+L7, L2, L2, L0, L1, E4, E1, E2 
+
+- Intento eliminar la clave 200 del nodo 4, como hay overflow, intento redistribuir con el nodo 
+izquierdo, como no puedo, redistribuyo con el hermano derecho.
+- Bajo la clave 300 al nodo 4 y subo la clave 400 como padre.
+
+-------------------------------------------------------------------------------------------------
+-500
+
+                            7: 2 (400) 6
+
+                2: 0 (100) 4        6: 1 (450) 5
+
+        0: (10)     4: (300)     1: (410)     5: (600)(700)
+
+L7, L6, L5, L3, E5, E3, L2, E2, E6, E7
+
+- Intento eliminar la clave 500 del nodo 5, como hay underflow, intento redistribuir con el hermano
+derecho, como no puedo, fusiono. se elimina el nodo 3, el 700 pasa al nodo 5, se elimina el nodo 5
+y baja el padre.
+- Esto me propagar un underflow en el nodo 6, por lo tanto redistribuyo con el hermano izquierdo.
+- Se reacomodan los punteros.
+
+-------------------------------------------------------------------------------------------------
+-100
+
+                    2: 0 (400) 1 (450) 5
+
+        0: (10)(300)     1: (410)     5: (600)(700)
+
+L7, L2, L4, L0, E0, E4, L6, E2, E6, E7
+
+- reemplazo la clave del nodo 2 por la menor clave de su subarbol derecho. Este reemplazo me 
+propaga un underflow en el nodo 4, como no tengo hermano izquierdo, intento redistribuir con el 
+hermano izquierdo. Como tampoco puedo, fusiono con el hermano izquierdo. Se borra el nodo 4, se baja
+el padre al nodo 0. 
+- Esto me propaga un underflow en el nodo 2, fusiono con el hermano derecho. Se borra el nodo 6 y baja
+el padre. Por lo tanto baja en 1 la altura del arbol
+
+
+
+
+
+
