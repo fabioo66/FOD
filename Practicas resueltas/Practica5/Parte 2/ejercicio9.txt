@@ -1,0 +1,117 @@
+Para las siguientes claves, realice el proceso de dispersion mediante el metodo de
+hashing extensible, sabiendo que cada nodo tiene capacidad para dos registros.
+El numero natural indica el orden de llegada de las claves. 
+
+Se debe mostrar el estado del archivo para cada operación. Justifique brevemente ante
+colision y desborde los pasos que realiza
+
+1 Borges   11110100  2 Sabato  00111111
+3 Cortazar 01010111  4 Lugones 10100101
+5 Casares  10101010  6 Walsh   01101011
+
+-------------------------------------------------------------------------------------------------------------------
+1 Borges   11110100
+
+(0)     (0)
+ 0:     (Borges)()    
+
+- El número cero sobre la tabla indica que no es necesario ningún bit de la secuencia obtenida por la 
+función de dispersión.
+- Se agrega la clave Borges en la celda 0 sin problema.  
+
+-------------------------------------------------------------------------------------------------------------------
+2 Sabato  00111111
+
+(0)     (0)
+ 0:     (Buenos Aires)(Sabato) 
+
+- Se agrega la clave Sabato en la celda 0, provocando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+3 Cortazar 01010111
+
+(1)     (1)
+ 0:     (Buenos Aires)()
+
+        (1)
+ 1:     (Cortazar)(Sabato)
+
+- La insercion de Cortazar produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- La tabla tiene una celda única, y como se dispone ahora de dos nodos, hace falta generar más direcciones. 
+- La cantidad de celdas de la tabla se duplica y el valor asociado a la tabla se incrementa en uno.
+- La primera celda de la tabla direcciona a la cubeta saturada, y la nueva celda apunta a la nueva cubeta generada.
+- Se redispersa.
+
+-------------------------------------------------------------------------------------------------------------------
+4 Lugones 10100101
+
+(2)     (1)
+ 00:    (Buenos Aires)()
+ 10:
+
+        (2)
+ 01:    (Lugones)()
+
+        (2)
+ 11:    (Cortazar)(Sabato)
+
+- La insercion de Lugones produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- Al no disponer de celdas suficientes en la tabla en memoria principal, se duplica el espacio disponible, que a 
+partir de este momento necesita 2 bits de la función de hash para poder direccionar un registro. 
+- La celda de referencia 01 contiene la dirección de la cubeta saturada, mientras que la celda de referencia 11 
+contiene la dirección de la nueva cubeta.
+- Se redispersan solamente las claves de las cubetas involucradas:
+Sabato   00111111
+Cortazar 01010111
+Lugones  10100101
+
+-------------------------------------------------------------------------------------------------------------------
+5 Casares  10101010
+
+(2)     (1)
+ 00:    (Buenos Aires)(Casares)
+ 10:
+
+        (2)
+ 01:    (Lugones)()
+
+        (2)
+ 11:    (Cortazar)(Sabato)
+
+- Se agrega la clave Casares en la celda 10 generando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+6 Walsh   01101011
+
+(3)     (1)
+ 000:   (Buenos Aires)(Casares)
+ 100:
+ 010:
+ 110:
+
+        (2)
+ 001:   (Lugones)()
+ 101:
+
+        (3)
+ 011:   (Walsh)()
+
+        (3)
+ 111:   (Sabato)(Cortazar)
+
+- Walsh debe ser almacenado en la cubeta asociada a la celda 11 de la tabla. La misma se encuentra completa 
+lo que genera un nuevo desborde.
+- Al no disponer de celdas suficientes en la tabla en memoria principal, se duplica el espacio disponible, que a 
+partir de este momento necesita 3 bits de la función de hash para poder direccionar un registro.
+- La celda de referencia 011 contiene la dirección de la cubeta saturada, mientras que la celda de referencia 111 
+contiene la dirección de la nueva cubeta.
+- Se redispersan solamente las claves de las cubetas involucradas:
+Sabato   00111111
+Cortazar 01010111
+Walsh    01101011

@@ -1,0 +1,136 @@
+Para las siguientes claves, realice el proceso de dispersión mediante el método de hashing
+extensible, sabiendo que cada nodo tiene capacidad para dos registros. El número natural
+indica el orden de llegada de las claves.
+
+Se debe mostrar el estado del archivo para cada operación. Justifique brevemente ante colisión
+y desborde los pasos que realiza.
+
+1: Darin     00111111  2: Alterio     11110100
+3: Sbaraglia 10100101  4: De la Serna 01010111
+5: Altavista 01101011  6: Grandinetti 10101010
+
+-------------------------------------------------------------------------------------------------------------------
+Ejemplo de como se trabajara:
+
+Valor asociado a la tabla: indica la cantidad de
+bits que es necesario tomar de la función de hash
+ ^
+ |
+(0)     (0) --> Valor asociado a la cubeta
+ 0:     (Darin)() --> Cubetas en disco
+ |
+ |
+ v
+ Tabla en memoria
+
+-------------------------------------------------------------------------------------------------------------------
+1 Darin     00111111
+
+(0)     (0)
+ 0:     (Darin)()    
+
+- El número cero sobre la tabla indica que no es necesario ningún bit de la secuencia obtenida por la 
+función de dispersión.
+- Se agrega la clave Darin en la celda 0 sin problema.  
+
+-------------------------------------------------------------------------------------------------------------------
+2 Alterio    11110100
+
+(0)     (0)
+ 0:     (Darin)(Alterio)
+
+- Se agrega la clave Alterio en la celda 0 sin problema.
+
+-------------------------------------------------------------------------------------------------------------------
+3 Sbaraglia    10100101
+
+(1)     (1)
+ 0:     (Alterio)()
+
+        (1)
+ 1:     (Darin)(Sbaraglia)
+
+- La insercion de Sbaraglia produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- La tabla tiene una celda única, y como se dispone ahora de dos nodos, hace falta generar más direcciones. 
+- La cantidad de celdas de la tabla se duplica y el valor asociado a la tabla se incrementa en uno.
+- La primera celda de la tabla direcciona a la cubeta saturada, y la nueva celda apunta a la nueva cubeta generada.
+
+-------------------------------------------------------------------------------------------------------------------
+4 De La Serna  01011111
+
+(2)     (1)
+ 00:    (Alterio)()
+ 10:
+
+        (2)
+ 01:    (Sbaraglia)()
+
+
+        (2)
+ 11:    (Darin)(De la Serna)
+
+- De la Serna debe ser almacenado en la cubeta asociada a la celda 1 de la tabla. La misma se encuentra completa 
+lo que genera un nuevo desborde.
+- Al no disponer de celdas suficientes en la tabla en memoria principal, se duplica el espacio disponible, que a 
+partir de este momento necesita 2 bits de la función de hash para poder direccionar un registro.
+- La celda de referencia 01 contiene la dirección de la cubeta saturada, mientras que la celda de referencia 11 
+contiene la dirección de la nueva cubeta.
+- Se redispersan solamente las claves de las cubetas involucradas:
+Darin        00111111
+Sbaraglia    10100101
+De La Serna  01011111
+
+-------------------------------------------------------------------------------------------------------------------
+5 Altavista   01101011
+
+ (3)     (1)
+ 000:    (Alterio)()
+ 100:
+ 010:    
+ 110:
+         (2)
+ 001:    (Sbaraglia)()
+ 101:
+
+         (3)
+ 011:    (Altavista)
+ 
+
+         (3)
+ 111:    (De la Serna)(Darin)    
+
+- Altavista debe ser almacenado en la cubeta asociada a la celda 11 de la tabla. La misma se encuentra completa 
+lo que genera un nuevo desborde.
+- Al no disponer de celdas suficientes en la tabla en memoria principal, se duplica el espacio disponible, que a 
+partir de este momento necesita 3 bits de la función de hash para poder direccionar un registro.
+- La celda de referencia 011 contiene la dirección de la cubeta saturada, mientras que la celda de referencia 111 
+contiene la dirección de la nueva cubeta.
+- Se redispersan solamente las claves de las cubetas involucradas:
+Darin        00111111
+Sbaraglia    10100101
+De La Serna  01011111
+Altavista    01101011
+
+-------------------------------------------------------------------------------------------------------------------
+6 Grandinetti     10101010
+
+ (3)     (1)
+ 000:    (Alterio)(Grandinetti)
+ 100:
+ 010:    
+ 110:
+         (2)
+ 001:    (Sbaraglia)()
+ 101:
+
+         (3)
+ 011:    (Altavista)
+ 
+
+         (3)
+ 111:    (De la Serna)(Darin)
+
+- Se agrega Grandinetti en la celda 010, se genera una colision.

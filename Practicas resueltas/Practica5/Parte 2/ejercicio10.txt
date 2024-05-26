@@ -1,0 +1,109 @@
+Para las siguientes claves, realice el proceso de dispersión mediante el método de
+hashing extensible, sabiendo que cada nodo tiene capacidad para dos registros. 
+El número natural indica el orden de llegada de las claves. 
+
+Se debe mostrar el estado del archivo para cada operación. Justifique brevemente ante 
+colisión y desborde los pasos que realiza.
+
+1 Guillermo.B 01100011  2 Gustavo.B 01010110 
+3 Enria       00110101  4 Gomez     00000001  
+5 Sosa        11110100  6 Guli      00101000
+
+-------------------------------------------------------------------------------------------------------------------
+1 Guillermo.B 01100011
+
+(0)     (0)
+ 0:     (Guillermo.B)()    
+
+- El número cero sobre la tabla indica que no es necesario ningún bit de la secuencia obtenida por la 
+función de dispersión.
+- Se agrega la clave Guillermo.B en la celda 0 sin problema.  
+
+-------------------------------------------------------------------------------------------------------------------
+2 Gustavo.B 01010110
+
+(0)     (0)
+ 0:     (Guillermo.B)(Gustavo.B) 
+
+- Se agrega la clave Gustavo.B en la celda 0, provocando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+3 Enria       00110101
+
+(1)     (1)
+ 0:     (Gustavo.B)() 
+
+        (1)
+ 1:     (Enria)(Guillermo.B)
+
+- La insercion de Enria produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- La tabla tiene una celda única, y como se dispone ahora de dos nodos, hace falta generar más direcciones. 
+- La cantidad de celdas de la tabla se duplica y el valor asociado a la tabla se incrementa en uno.
+- La primera celda de la tabla direcciona a la cubeta saturada, y la nueva celda apunta a la nueva cubeta generada.
+- Se redispersa.
+
+-------------------------------------------------------------------------------------------------------------------
+4 Gomez     00000001
+
+(2)     (1)
+ 00:    (Gustavo.B)()
+ 10:    
+
+        (2)
+ 01:    (Enria)(Gomez)
+
+        (2)
+ 11:    (Guillermo.B)()
+
+- La insercion de Gomez produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- Al no disponer de celdas suficientes en la tabla en memoria principal, se duplica el espacio disponible, que a 
+partir de este momento necesita 2 bits de la función de hash para poder direccionar un registro. 
+- La celda de referencia 01 contiene la dirección de la cubeta saturada, mientras que la celda de referencia 11 
+contiene la dirección de la nueva cubeta.
+- Se redispersan solamente las claves de las cubetas involucradas:
+Guillermo.B 01100011
+Enria       00110101
+Gomez       00000001   
+
+-------------------------------------------------------------------------------------------------------------------
+5 Sosa        11110100
+
+(2)     (1)
+ 00:    (Gustavo.B)(Sosa)
+ 10:    
+
+        (2)
+ 01:    (Enria)(Gomez)
+
+        (2)
+ 11:    (Guillermo.B)()
+
+- Agrego la clave sosa en la celda 00 generando colision.   
+
+-------------------------------------------------------------------------------------------------------------------
+6 Guli      00101000
+
+(2)     (2)
+ 00:    (Sosa)(Guli)
+
+        (2)
+ 10:    (Gustavo.B)()
+
+        (2)
+ 01:    (Enria)(Gomez)
+
+        (2)
+ 11:    (Guillermo.B)()
+
+- Su dirección de almacenamiento corresponde a la cubeta asociada a la celda 00. Se genera desborde 
+y se crea una nueva cubeta.
+- El valor asociado a ambas cubetas coincide con el valor asociado a la tabla en memoria. 
+Por lo tanto: 
+    La tabla posee direcciones suficientes para direccionar a la nueva cubeta y la cantidad de 
+    celdas NO debe ser duplicada!

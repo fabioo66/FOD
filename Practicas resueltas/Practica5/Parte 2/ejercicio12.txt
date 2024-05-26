@@ -1,0 +1,201 @@
+12. Realice el proceso de dispersión mediante el método de hashing extensible, sabiendo
+que cada nodo tiene capacidad para dos claves. 
+El número natural indica el orden de llegada de las mismas.
+
+Deberá explicar los pasos que realiza en cada operación y dibujar los estados sucesivos 
+correspondientes (inclusive el estado inicial).
+1 Aconcagua  10100111 2 Kilimanjaro 10101010
+3 Mont Blanc 00111110 4 Cervino     01101111
+5 Etna       00110101 6 Chañi       11110000
+7 Cho Oyu    01011101 8 Vinicunca   01011011
+9 Manaslu    00110100 10 Monte Tai  11100011
+
+-------------------------------------------------------------------------------------------------------------------
+1 Aconcagua  10100111
+
+(0)     (0)
+ 0:     (Aconcagua)()    
+
+- El número cero sobre la tabla indica que no es necesario ningún bit de la secuencia obtenida por la 
+función de dispersión.
+- Se agrega la clave Aconcagua en la celda 0 sin problema.  
+
+-------------------------------------------------------------------------------------------------------------------
+2 Kilimanjaro 10101010
+
+(0)     (0)
+ 0:     (Aconcagua)(Kilimanjaro) 
+
+- Se agrega la clave Kilimanjaro en la celda 0, provocando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+3 Mont Blanc 00111110
+
+(1)     (1)
+ 0:     (Kilimanjaro)(Mont Blanc)
+
+        (1)
+ 1:     (Aconcagua)()
+
+- La insercion de Mont Blanc produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- La tabla tiene una celda única, y como se dispone ahora de dos nodos, hace falta generar más direcciones. 
+- La cantidad de celdas de la tabla se duplica y el valor asociado a la tabla se incrementa en uno.
+- La primera celda de la tabla direcciona a la cubeta saturada, y la nueva celda apunta a la nueva cubeta generada.
+- Se redispersa.
+
+-------------------------------------------------------------------------------------------------------------------
+4 Cervino     01101111
+
+(1)     (1)
+ 0:     (Kilimanjaro)(Mont Blanc)
+
+        (1)
+ 1:     (Aconcagua)(Cervino)
+
+- Agrego la clave Cervino en la celda 1 generando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+5 Etna       00110101
+
+(2)     (1)
+ 00:    (Kilimanjaro)(Mont Blanc)
+ 10:
+
+        (2)
+ 01:    (Etna)()
+
+        (2)
+ 11:    (Aconcagua)(Cervino) 
+
+- La insercion de Etna produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- Al no disponer de celdas suficientes en la tabla en memoria principal, se duplica el espacio disponible, que a 
+partir de este momento necesita 2 bits de la función de hash para poder direccionar un registro. 
+- La celda de referencia 01 contiene la dirección de la cubeta saturada, mientras que la celda de referencia 11 
+contiene la dirección de la nueva cubeta.
+- Se redispersan solamente las claves de las cubetas involucradas:
+Aconcagua  10100111
+Cervino    01101111
+Etna       00110101
+
+-------------------------------------------------------------------------------------------------------------------
+6 Chañi       11110000
+
+(2)     (2)
+ 00:    (Chañi)()
+
+        (2)
+ 10:    (Mont Blanc)(Kilimanjaro)
+
+        (2)
+ 01:    (Etna)()
+
+        (2)
+ 11:    (Aconcagua)(Cervino) 
+
+- Su dirección de almacenamiento corresponde a la cubeta asociada a la celda 00. Se genera desborde 
+y se crea una nueva cubeta.
+- El valor asociado a ambas cubetas coincide con el valor asociado a la tabla en memoria. 
+Por lo tanto: 
+    La tabla posee direcciones suficientes para direccionar a la nueva cubeta y la cantidad de 
+    celdas NO debe ser duplicada!
+
+-------------------------------------------------------------------------------------------------------------------
+7 Cho Oyu    01011101
+
+(2)     (2)
+ 00:    (Chañi)()
+
+        (2)
+ 10:    (Mont Blanc)(Kilimanjaro)
+
+        (2)
+ 01:    (Etna)(Cho Oyu)
+
+        (2)
+ 11:    (Aconcagua)(Cervino)
+
+- Agrego la clave Cho Oyu en la celda 01 generando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+8 Vinicunca   01011011
+
+(3)     (2)
+ 000:   (Chañi)()
+ 100:
+
+        (2)
+ 010:   (Mont Blanc)(Kilimanjaro)
+ 110:
+
+        (2)
+ 001:   (Etna)(Cho Oyu)
+ 101:
+
+        (3)
+ 011:   (Vinicunca)()
+
+        (3)
+ 111:   (Aconcagua)(Cervino)
+
+- Vinicunca debe ser almacenado en la cubeta asociada a la celda 11 de la tabla. La misma se encuentra completa 
+lo que genera un nuevo desborde.
+- Al no disponer de celdas suficientes en la tabla en memoria principal, se duplica el espacio disponible, que a 
+partir de este momento necesita 3 bits de la función de hash para poder direccionar un registro.
+- La celda de referencia 011 contiene la dirección de la cubeta saturada, mientras que la celda de referencia 111 
+contiene la dirección de la nueva cubeta.
+- Se redispersan solamente las claves de las cubetas involucradas:
+Aconcagua  10100111
+Cervino    01101111
+Vinicunca   01011011
+
+-------------------------------------------------------------------------------------------------------------------
+9 Manaslu    00110100
+
+(3)     (2)
+ 000:   (Chañi)(Manaslu)
+ 100:
+
+        (2)
+ 010:   (Mont Blanc)(Kilimanjaro)
+ 110:
+
+        (2)
+ 001:   (Etna)(Cho Oyu)
+ 101:
+
+        (3)
+ 011:   (Vinicunca)()
+
+        (3)
+ 111:   (Aconcagua)(Cervino)
+
+- Agrego la clave Manaslu en la celda 100 generando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+10 Monte Tai  11100011
+
+(3)     (2)
+ 000:   (Chañi)(Manaslu)
+ 100:
+
+        (2)
+ 010:   (Mont Blanc)(Kilimanjaro)
+ 110:
+
+        (2)
+ 001:   (Etna)(Cho Oyu)
+ 101:
+
+        (3)
+ 011:   (Vinicunca)(Monte Tai)
+
+        (3)
+ 111:   (Aconcagua)(Cervino)
+
+- Agrego la clave Monte Tai en la celda 011 generando colision.
