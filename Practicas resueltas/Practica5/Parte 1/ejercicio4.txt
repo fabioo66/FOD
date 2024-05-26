@@ -1,0 +1,7 @@
+- Elegir un algoritmo de dispersión perfecto, que no genere colisiones. Este tipo de algoritmo debe asegurar que dadas dos claves 
+diferentes siempre se obtendrán dos direcciones físicas diferentes. Se ha demostrado que obtener este tipo de funciones resulta e
+extremadamente difícil.
+- Minimizar el número de colisiones a una cantidad aceptable, y de esta manera tratar dichas colisiones como una condición excepcional.
+    - Distribuir los registros de la forma más aleatoria posible.
+    - Utilizar más espacio de disco.
+    -  Ubicar o almacenar más de un registro por cada dirección física en el archivo.

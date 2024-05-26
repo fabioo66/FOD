@@ -1,0 +1,8 @@
+Hashing o dispersión es un método que mejora la eficiencia obtenida con árboles balanceados, asegurando en promedio un acceso para 
+recuperar la información. Ejemplo de 3 definiciones:
+- Técnica para generar una dirección base única para una clave dada. La dispersión se usa cuando se requiere acceso rápido 
+mediante una clave. 
+- Técnica que convierte la clave asociada a un registro de datos en un número aleatorio, el cual posteriormente es utilizado para 
+determinar dónde se almacena dicho registro. 
+- Técnica de almacenamiento y recuperación que usa una función para mapear registros en direcciones de almacenamiento en me-
+moria secundaria.

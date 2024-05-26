@@ -1,0 +1,3 @@
+Una función de hash o dispersión es una función que transforma un valor, que representa una llave primaria 
+de un registro, en otro valor dentro de un determinado rango, que se utiliza como dirección física de acceso 
+para insertar un registro en un archivo de datos.

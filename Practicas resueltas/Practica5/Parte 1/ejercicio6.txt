@@ -1,0 +1,23 @@
+- Saturacion progresiva:
+    El método consiste en almacenar el registro en la dirección siguiente más próxima al nodo donde se produce saturación.
+- Saturacion progresiva encadenada:
+    el método funciona igual, la diferencia radica en que, una vez localizada la nueva dirección, esta se encadena o enlaza 
+    con la dirección base inicial, generando una cadena de búsqueda de elementos.
+- Saturación progresiva encadenada con área de desborde separada: 
+    El método consiste en disponer de dos funciones de hash. la primera obtiene a partir de la llave la dirección de base, en 
+    la cual el registro será ubicado. De producirse overflow, se utilizará la segunda función de hash. Esta segunda función 
+    no retorna una dirección, sino que su resultado es un desplazamiento. Este desplazamiento se suma a la dirección base 
+    obtenida con la primera función, generando así la nueva dirección donde se intentará ubicar al registro. En caso de generarse 
+    nuevamente overflow, se deberá sumar de manera reiterada el desplazamiento obtenido, y así sucesivamente hasta encontrar una 
+    dirección con espacio suficiente para albergar al registro.
+- Dispersión doble
+    Definicion del libro:
+        Se distinguen dos tipos  de nodos: aquellos direccionables por la función de hash y aquellos de reserva, que solo podrán ser 
+        utilizados en caso de saturación pero que no son alcanzables por la función de hash.
+    Definicion de las filminas:
+        saturación tiende a agrupar en zonas contiguas, búsquedas largas cuando la densidad tiende a uno.
+        Solución almacenar los registros de overflow en zonas no relacionadas. esquema con el cual se resuelven overflows aplicando 
+        una segunda función a la llave para producir un Nº C, el cual se suma a la dirección original tantas veces como sea necesario 
+        hasta encontrar una dirección con espacio. 
+        
+    (no entendi ninguna de las dos)

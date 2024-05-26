@@ -1,0 +1,4 @@
+Se define la Densidad de empaquetamiento (De) como la relación entre el espacio disponible para el archivo de datos y la cantidad
+de registros que integran dicho archivo. En otras palabras es 'la cantidad de registros que componen un archivo y el espacio 
+disponible para almacenar ese archivo'. La consecuencia seria que cuando la DE se mantiene baja, se desperdicia espacio 
+en el disco, dado que se utiliza menor espacio que el reservado, generando fragmentación.

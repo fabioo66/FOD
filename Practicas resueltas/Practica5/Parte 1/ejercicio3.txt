@@ -1,0 +1,6 @@
+Colision: Situación en la que un registro es asignado a una dirección que está utilizada por otro registro
+Desborde: ocurre cuando un registro es direccionado a un nodo que no dispone de capacidad para almacenarlo. Cuando esto 
+ocurre, deben realizarse dos acciones: encontrar lugar para el registro en otra dirección y asegurarse de que el registro posteriormente 
+sea  encontrado  en  esa  nueva  dirección. 
+La condicion necearia para que pueda ocurrir una colisión y no un desborde es: Debe haber espacio disponible en la dirección (en esta dirección, 
+se encuentran uno o más registros previamente) asignada por la función de dispersión, donde irá el registro a almacenarse.
