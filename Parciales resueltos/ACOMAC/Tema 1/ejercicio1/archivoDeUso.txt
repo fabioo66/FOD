@@ -1,0 +1,30 @@
+101
+Velociraptor
+1.8 
+15
+Carnívoro rápido y ágil con garras afiladas.
+Norteamérica
+102
+Triceratops
+3 
+6 
+Herbívoro con tres cuernos y gran protector facial.
+Norteamérica
+103
+Tyrannosaurus Rex
+5 
+9 
+Gran depredador con dientes afilados y poderosa mandíbula.
+Norteamérica
+104
+Stegosaurus
+4 
+2.5 
+Herbívoro con placas óseas y espinas en la cola.
+Norteamérica
+105
+Brachiosaurus
+9 
+30 
+Herbívoro con largo cuello y patas delanteras más largas que las traseras.
+Norteamérica
