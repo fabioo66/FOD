@@ -45,7 +45,7 @@ izquierdo, como no puedo, redistribuyo con el hermano derecho.
 
                 2: 0 (100) 4        6: 1 (450) 5
 
-        0: (10)     4: (300)     1: (410)     5: (600)(700)
+         0: (10)     4: (300)     1: (410)     5: (600)(700)
 
 L7, L6, L5, L3, E5, E3, L2, E2, E6, E7
 
@@ -62,7 +62,7 @@ y baja el padre.
 
         0: (10)(300)     1: (410)     5: (600)(700)
 
-L7, L2, L4, L0, E0, E4, L6, E2, E6, E7
+L7, L2, L4, L0, L6, E0, E4, E2, E6, E7
 
 - reemplazo la clave del nodo 2 por la menor clave de su subarbol derecho. Este reemplazo me 
 propaga un underflow en el nodo 4, como no tengo hermano izquierdo, intento redistribuir con el 
