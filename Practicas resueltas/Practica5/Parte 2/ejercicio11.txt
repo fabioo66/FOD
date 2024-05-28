@@ -23,7 +23,7 @@ función de dispersión.
 2 Braña   01010111
 
 (0)     (0)
- 0:     (Verón)(Braña) 
+ 0:     (Braña)(Verón) 
 
 - Se agrega la clave Braña en la celda 0, provocando colision.
 
@@ -31,7 +31,7 @@ función de dispersión.
 3 Calderón 00110100
 
 (1)     (1)
- 0:     (Verón)(Calderón)
+ 0:     (Calderón)(Verón)
 
         (1)
  1:     (Braña)()
@@ -96,7 +96,7 @@ Sosa     10001000
  10:    (Verón)
 
         (2)
- 01:    (Pavone)(Andújar)
+ 01:    (Andújar)(Pavone)
 
         (2)
  11:    (Braña)

@@ -23,7 +23,7 @@ función de dispersión.
 2 Sabato  00111111
 
 (0)     (0)
- 0:     (Buenos Aires)(Sabato) 
+ 0:     (Borges)(Sabato) 
 
 - Se agrega la clave Sabato en la celda 0, provocando colision.
 
@@ -31,7 +31,7 @@ función de dispersión.
 3 Cortazar 01010111
 
 (1)     (1)
- 0:     (Buenos Aires)()
+ 0:     (Borges)()
 
         (1)
  1:     (Cortazar)(Sabato)
@@ -49,7 +49,7 @@ función de dispersión.
 4 Lugones 10100101
 
 (2)     (1)
- 00:    (Buenos Aires)()
+ 00:    (Borges)()
  10:
 
         (2)
@@ -75,7 +75,7 @@ Lugones  10100101
 5 Casares  10101010
 
 (2)     (1)
- 00:    (Buenos Aires)(Casares)
+ 00:    (Borges)(Casares)
  10:
 
         (2)
@@ -90,7 +90,7 @@ Lugones  10100101
 6 Walsh   01101011
 
 (3)     (1)
- 000:   (Buenos Aires)(Casares)
+ 000:   (Borges)(Casares)
  100:
  010:
  110:
@@ -103,7 +103,7 @@ Lugones  10100101
  011:   (Walsh)()
 
         (3)
- 111:   (Sabato)(Cortazar)
+ 111:   (Cortazar)(Sabato)
 
 - Walsh debe ser almacenado en la cubeta asociada a la celda 11 de la tabla. La misma se encuentra completa 
 lo que genera un nuevo desborde.

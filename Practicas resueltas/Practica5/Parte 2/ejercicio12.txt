@@ -90,7 +90,7 @@ Etna       00110101
  00:    (Chañi)()
 
         (2)
- 10:    (Mont Blanc)(Kilimanjaro)
+ 10:    (Kilimanjaro)(Mont Blanc)
 
         (2)
  01:    (Etna)()
@@ -112,10 +112,10 @@ Por lo tanto:
  00:    (Chañi)()
 
         (2)
- 10:    (Mont Blanc)(Kilimanjaro)
+ 10:    (Kilimanjaro)(Mont Blanc)
 
         (2)
- 01:    (Etna)(Cho Oyu)
+ 01:    (Cho Oyu)(Etna)
 
         (2)
  11:    (Aconcagua)(Cervino)
@@ -130,7 +130,7 @@ Por lo tanto:
  100:
 
         (2)
- 010:   (Mont Blanc)(Kilimanjaro)
+ 010:   (Kilimanjaro)(Mont Blanc)
  110:
 
         (2)
@@ -162,11 +162,11 @@ Vinicunca   01011011
  100:
 
         (2)
- 010:   (Mont Blanc)(Kilimanjaro)
+ 010:   (Kilimanjaro)(Mont Blanc)
  110:
 
         (2)
- 001:   (Etna)(Cho Oyu)
+ 001:   (Cho Oyu)(Etna)
  101:
 
         (3)
@@ -185,15 +185,15 @@ Vinicunca   01011011
  100:
 
         (2)
- 010:   (Mont Blanc)(Kilimanjaro)
+ 010:   (Kilimanjaro)(Mont Blanc)
  110:
 
         (2)
- 001:   (Etna)(Cho Oyu)
+ 001:   (Cho Oyu)(Etna)
  101:
 
         (3)
- 011:   (Vinicunca)(Monte Tai)
+ 011:   (Monte Tai)(Vinicunca)
 
         (3)
  111:   (Aconcagua)(Cervino)

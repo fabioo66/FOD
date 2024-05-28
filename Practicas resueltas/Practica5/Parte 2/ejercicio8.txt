@@ -53,7 +53,7 @@ función de dispersión.
  00:    (San Juan)()
 
         (2)
- 10:    (Entre Rios)(Corrientes)
+ 10:    (Corrientes)(Entre Rios)
 
         (1)
  01:    (Buenos Aires)()
@@ -79,7 +79,7 @@ Corrientes ....0010
  00:    (San Juan)()
 
         (2)
- 10:    (Entre Rios)(Corrientes)
+ 10:    (Corrientes)(Entre Rios)
 
         (1)
  01:    (Buenos Aires)(San Luis)
@@ -94,7 +94,7 @@ Corrientes ....0010
  00:    (San Juan)()
 
         (2)
- 10:    (Entre Rios)(Corrientes)
+ 10:    (Corrientes)(Entre Rios)
 
         (1)
  01:    (Buenos Aires)(San Luis)
@@ -107,7 +107,7 @@ Corrientes ....0010
  00:    (San Juan)()
 
         (2)
- 10:    (Entre Rios)(Corrientes)
+ 10:    (Corrientes)(Entre Rios)
 
         (2)
  01:    (Buenos Aires)(San Luis)
@@ -129,13 +129,13 @@ Por lo tanto:
  00:    (San Juan)()
 
         (2)
- 10:    (Entre Rios)(Corrientes)
+ 10:    (Corrientes)(Entre Rios)
 
         (2)
  01:    (Buenos Aires)(San Luis)
 
         (2)
- 11:    (Tucumán)(Rio Negro)
+ 11:    (Rio Negro)(Tucumán)
 
 - Se agrega la clave Rio Negro en la celda 11, provocando colision.
 
@@ -148,7 +148,7 @@ Por lo tanto:
 
 
  010:    (2)      
- 110:    (Entre Rios)(Corrientes)
+ 110:    (Corrientes)(Entre Rios)
 
 
          (2)
@@ -161,7 +161,7 @@ Por lo tanto:
  
 
          (3)
- 111:    (Tucumán)(Jujuy)  
+ 111:    (Jujuy)(Tucumán)  
 
 - Jujuy debe ser almacenado en la cubeta asociada a la celda 11 de la tabla. La misma se encuentra completa 
 lo que genera un nuevo desborde.

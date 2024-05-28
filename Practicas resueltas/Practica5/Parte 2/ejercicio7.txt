@@ -39,7 +39,7 @@ función de dispersión.
 (0)     (0)
  0:     (Darin)(Alterio)
 
-- Se agrega la clave Alterio en la celda 0 sin problema.
+- Se agrega la clave Alterio y se genera colision.
 
 -------------------------------------------------------------------------------------------------------------------
 3 Sbaraglia    10100101
@@ -100,7 +100,7 @@ De La Serna  01011111
  
 
          (3)
- 111:    (De la Serna)(Darin)    
+ 111:    (Darin)(De la Serna)    
 
 - Altavista debe ser almacenado en la cubeta asociada a la celda 11 de la tabla. La misma se encuentra completa 
 lo que genera un nuevo desborde.
@@ -131,6 +131,6 @@ Altavista    01101011
  
 
          (3)
- 111:    (De la Serna)(Darin)
+ 111:    (Darin)(De la Serna)
 
 - Se agrega Grandinetti en la celda 010, se genera una colision.

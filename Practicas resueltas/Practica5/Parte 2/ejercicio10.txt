@@ -90,7 +90,7 @@ Gomez       00000001
 6 Guli      00101000
 
 (2)     (2)
- 00:    (Sosa)(Guli)
+ 00:    (Guli)(Sosa)
 
         (2)
  10:    (Gustavo.B)()
