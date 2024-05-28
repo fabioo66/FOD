@@ -92,7 +92,7 @@ begin
     seek(a, 1);
     while(not eof(a))do begin
         read(a, d);
-        if(not d.codigo <= 0)then 
+        if(d.codigo > 0)then 
             writeln(txt, d.codigo, ' ', d.tipo, ' ', d.altura:0:2, ' ', d.peso:0:2, ' ', d.descripcion, ' ', d.zona);
     end;
     close(a);
