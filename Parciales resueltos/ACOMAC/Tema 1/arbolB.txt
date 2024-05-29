@@ -69,14 +69,14 @@ L8, L7, L4, E4
 
                                     8: 2 (900) 7 
 
-                        2: 0 (600) 1     7: 5 (1200) 4 (2000) 6
+                        2: 0 (600) 1     7: 5 (1100) 4 (1800) 6
 
-    0: (400)(500)    1: (700)(800)  5: (1000)(1100)  4: (1800)    6: (2400)
+    0: (400)(500)    1: (700)(800)  5: (1000)  4: (1200)    6: (2000)(2400)
 
 L8, L7, L4, L6, E4, E6, E4 
 
-- Intento eliminar la clave 1600 del nodo 4, como hay underflow y no tengo hermano izquierdo, redistribuyo con el hermano derecho.
-- Se baja el padre al nodo 4 y se sube la clave 2000 del nodo 6.
+- Intento eliminar la clave 1600 del nodo 4, como hay underflow, redistribuyo con el hermano izquierdo.
+- Se baja el padre al nodo 4 y se sube la clave 1100 del nodo 5.
 
 
 
