@@ -75,6 +75,7 @@ var
     d : distro;
     encontre : boolean;
 begin
+	reset(arch);
     encontre := false;
     while(not eof(arch) and not encontre)do begin
         read(arch, d);
@@ -82,6 +83,7 @@ begin
             encontre := true;
     end;
 	existeDistribucion := encontre;
+	close(arch);
 end;
 
 {b. AltaDistribución: módulo que lee por teclado los datos de una nueva
@@ -92,31 +94,31 @@ debe informar “ya existe la distribución”.}
 
 procedure altaDistribucion(var arch : archivo);
 var
-    d, aux : distro;
+    d, cabecera : distro;
 begin
 	writeln('Ingrese los datos de la distribucion que desea agregar');
     reset(arch);
-    leerDistro(aux);
-    if(existeDistribucion(arch, aux.nombre))then 
+    leerDistro(d);
+    if(existeDistribucion(arch, d.nombre))then 
         writeln('Ya existe la distribucion')
     else begin
-		seek(arch, 0);
-		read(arch, d);
-		if(d.anio = 0)then begin 
+		reset(arch);
+		read(arch, cabecera);
+		if(cabecera.anio = 0)then begin 
 			seek(arch, filepos(arch));
-			write(arch, aux)
+			write(arch, d)
 		end
 		else begin
-			seek(arch, d.anio *-1);
-			read(arch, d);
+			seek(arch, cabecera.anio *-1);
+			read(arch, cabecera);
 			seek(arch, filepos(arch)-1);
-			write(arch, aux);
-			seek(arch, 0);
 			write(arch, d);
+			seek(arch, 0);
+			write(arch, cabecera);
 		end;
+		close(arch);
 		writeln('Se agrego una distribucion de linux correctamente');
 	end;
-	close(arch);
 end;
 
 {c. BajaDistribución: módulo que da de baja lógicamente una distribución
@@ -128,24 +130,27 @@ se debe informar “Distribución no existente”.}
 
 procedure bajaDistribucion(var arch : archivo);
 var
-	aux : distro;
+	cabecera, d : distro;
 	nombre : string;
 begin
-	reset(arch);
 	writeln('Ingrese el nombre de la distribucion que desea eliminar');
 	readln(nombre);
-	read(arch, aux);
 	if(existeDistribucion(arch, nombre))then begin
+		reset(arch);
+		read(arch, cabecera);
+		read(arch, d);
+		while(d.nombre <> nombre)do
+			read(arch, d);
 		seek(arch, filepos(arch)-1);
-		write(arch, aux);
-		aux.anio := (filePos(arch)-1) * -1; 
+		write(arch, cabecera);
+		cabecera.anio := (filePos(arch)-1) * -1; 
 		seek(arch, 0);
-		write(arch, aux);
+		write(arch, cabecera);
+		close(arch);
 		writeln('Distribucion eliminada correctamente')
 	end
 	else
 		writeln('No se encontro la distribucion');
-	close(arch);
 end;
 
 procedure imprimirArchivo(var arch : archivo);
