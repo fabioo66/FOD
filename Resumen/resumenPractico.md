@@ -558,12 +558,31 @@ type
     end;
     
     archivo = file of distro;
+    
+procedure leerDistro(var d : distro);
+begin
+	writeln('Ingrese el anio de lanzamiento');
+	readln(d.anio);
+	if(d.anio <> -1)then begin
+		writeln('Ingrese el nombre de la distribucion de linux');
+		readln(d.nombre);
+		writeln('Ingrese la version del kernel');
+		readln(d.version);
+		writeln('Ingrese la cantidad de desarrolladores');
+		//readln(d.cantDesarroladores);
+		d.cantDesarrolladores := random(50)+51;
+		writeln(d.cantDesarrolladores);
+		writeln('Ingrese la descripcion');
+		readln(d.descripcion);
+	end;
+end;    
 
 function existeDistribucion(var arch : archivo; nombre : string) : boolean;
 var
     d : distro;
     encontre : boolean;
 begin
+	reset(arch);
     encontre := false;
     while(not eof(arch) and not encontre)do begin
         read(arch, d);
@@ -571,57 +590,61 @@ begin
             encontre := true;
     end;
 	existeDistribucion := encontre;
+	close(arch);
 end;
 
 procedure altaDistribucion(var arch : archivo);
 var
-    d, aux : distro;
+    d, cabecera : distro;
 begin
 	writeln('Ingrese los datos de la distribucion que desea agregar');
     reset(arch);
-    leerDistro(aux);
-    if(existeDistribucion(arch, aux.nombre))then 
+    leerDistro(d);
+    if(existeDistribucion(arch, d.nombre))then 
         writeln('Ya existe la distribucion')
     else begin
-		seek(arch, 0);
-		read(arch, d);
-		if(d.anio = 0)then begin 
+		reset(arch);
+		read(arch, cabecera);
+		if(cabecera.anio = 0)then begin 
 			seek(arch, filepos(arch));
-			write(arch, aux)
+			write(arch, d)
 		end
 		else begin
-			seek(arch, d.anio *-1);
-			read(arch, d);
+			seek(arch, cabecera.anio *-1);
+			read(arch, cabecera);
 			seek(arch, filepos(arch)-1);
-			write(arch, aux);
-			seek(arch, 0);
 			write(arch, d);
+			seek(arch, 0);
+			write(arch, cabecera);
 		end;
+		close(arch);
 		writeln('Se agrego una distribucion de linux correctamente');
 	end;
-	close(arch);
 end;
 
 procedure bajaDistribucion(var arch : archivo);
 var
-	aux : distro;
+	cabecera, d : distro;
 	nombre : string;
 begin
-	reset(arch);
 	writeln('Ingrese el nombre de la distribucion que desea eliminar');
 	readln(nombre);
-	read(arch, aux);
 	if(existeDistribucion(arch, nombre))then begin
+		reset(arch);
+		read(arch, cabecera);
+		read(arch, d);
+		while(d.nombre <> nombre)do
+			read(arch, d);
 		seek(arch, filepos(arch)-1);
-		write(arch, aux);
-		aux.anio := (filePos(arch)-1) * -1; 
+		write(arch, cabecera);
+		cabecera.anio := (filePos(arch)-1) * -1; 
 		seek(arch, 0);
-		write(arch, aux);
+		write(arch, cabecera);
+		close(arch);
 		writeln('Distribucion eliminada correctamente')
 	end
 	else
 		writeln('No se encontro la distribucion');
-	close(arch);
 end;
 ```
 
@@ -841,14 +864,14 @@ con el hermano derecho. bajo el padre (10) al nodo 0 y subo el 15 como padre.
 
                 2: 0 (15) 1       6: 5 (42) 4
 
-           0: (10)    1: (20)   5: (25)   4: (70)
+           0: (10)    1: (20)   5: (25)   4: (60)(70)
 
-L7, L6, L4, L3, E4, E3, E6, L2, E2, E6, E7
+L7, L6, L4, L3, E4, E6, E2, E7
 
 - Intento eliminar la clave 48 del nodo 4, como el nodo tiene el minimo de elementos, se
 produce underflow. Como no tengo hermano izquierdo, intento redistribuir con el hermano 
-derecho. Como este tambien tiene el minimo de elementos, fusiono. En la fusion se elimina
-siempre el nodo de la derecha.
+derecho. Como este tambien tiene el minimo de elementos, fusiono. En la fusion se libera
+siempre el nodo de la derecha y se almacena en una pila.
 - Esta fusion me propaga underflow en el nodo 6, asi que redistribuyo con el nodo 2.
 
 **Muchisimos mas ejemplos [here](https://github.com/fabioo66/FOD/tree/main/Practicas%20resueltas/Practica4/parte2)**
@@ -933,8 +956,208 @@ Como tampoco puedo redistribuir, fusiono con el hermano derecho.
 ##### Observaciones
 - Cada vez que pasamos por un nodo se cuenta como una lectura. Si ya leimos ese nodo, no sumamos la siguiente lectura.
 - Cada vez que eliminamos un nodo, sumamos una escritura.
-- Cuando fusioono un nodo, **SIEMPRE** se elimina el nodo de la derecha.
-- Orden de las escrituras: de abajo para arriba de izquierda a derecha. 
+- Orden de las escrituras: de abajo para arriba de izquierda a derecha.
+- La unica posibilidad de que la altura del arbol baje, es cuando se propaga un underflow en un nodo interno
+que esta por debajo de la raiz y tengamos que fusionar. La RAIZ DEBE CONTENER SOLO UN elemento.
+Por lo tanto cuando se baje la raiz (unico elemento) se decrementaria en uno la altura del arbol.
+__Arbol B__
+- Cuando redistribuimos en un arbol B, reemplazo de claves
+- Fusion: se libera el nodo derecho y baja el padre. Cuando se libera un nodo, no cuenta como escritura  
+__Arbol B+__ 
+- Cuando redistribuimos, si **EL SEPARADOR YA NO SIRVE** lo reemplazo por el nodo de la derecha
+- En la fusion, se libera el nodo de la derecha y la clave del padre se elimina.
+
+### Practica 5 Hashing
+Hashing o dispersión es un método que mejora la eficiencia obtenida con árboles balanceados, asegurando en promedio un acceso para 
+recuperar la información. Ejemplo de 3 definiciones:
+- Técnica para generar una dirección base única para una clave dada. La dispersión se usa cuando se requiere acceso rápido 
+mediante una clave. 
+- Técnica que convierte la clave asociada a un registro de datos en un número aleatorio, el cual posteriormente es utilizado para 
+determinar dónde se almacena dicho registro. 
+- Técnica de almacenamiento y recuperación que usa una función para mapear registros en direcciones de almacenamiento en me-
+moria secundaria.
+
+#### Funcion de hash
+Una función de hash o dispersión es una función que transforma un valor, que representa una llave primaria 
+de un registro, en otro valor dentro de un determinado rango, que se utiliza como dirección física de acceso 
+para insertar un registro en un archivo de datos.
+
+#### Conceptos a tener en cuenta
+##### Colision: 
+- Situación en la que un registro es asignado a una dirección que está utilizada por otro registro
+
+##### Desborde: 
+- Ocurre cuando un registro es direccionado a un nodo que no dispone de capacidad para almacenarlo. Cuando esto ocurre, deben realizarse dos acciones:  
+encontrar lugar para el registro en otra dirección y asegurarse de que el registro posteriormente sea  encontrado  en  esa  nueva  dirección. 
+La condicion necearia para que pueda ocurrir una colisión y no un desborde es: Debe haber espacio disponible en la dirección (en esta dirección, 
+se encuentran uno o más registros previamente) asignada por la función de dispersión, donde irá el registro a almacenarse.
+
+#### Densidad de empaquetamiento (DE)
+Se define la Densidad de empaquetamiento como la relación entre el espacio disponible para el archivo de datos y la cantidad
+de registros que integran dicho archivo. En otras palabras es 'la cantidad de registros que componen un archivo y el espacio 
+disponible para almacenar ese archivo'. DE = número de registros / espacio Total
+
+Aunque la función de dispersión sea eficiente y la densidad de empaquetamiento sea baja, es probable que ocurran desbordes.
+Métodos aplicables para resolver colisiones con desborde en dispersión estática:
+#### Saturacion progresiva:
+- El método consiste en almacenar el registro en la dirección siguiente más próxima al nodo donde se produce saturación.
+#### Saturacion progresiva encadenada:
+- el método funciona igual, la diferencia radica en que, una vez localizada la nueva dirección, esta se encadena o enlaza 
+con la dirección base inicial, generando una cadena de búsqueda de elementos.
+#### Saturación progresiva encadenada con área de desborde separada: 
+- El método consiste en disponer de dos funciones de hash. la primera obtiene a partir de la llave la dirección de base, en 
+la cual el registro será ubicado. De producirse overflow, se utilizará la segunda función de hash. Esta segunda función 
+no retorna una dirección, sino que su resultado es un desplazamiento. Este desplazamiento se suma a la dirección base 
+obtenida con la primera función, generando así la nueva dirección donde se intentará ubicar al registro. En caso de generarse 
+nuevamente overflow, se deberá sumar de manera reiterada el desplazamiento obtenido, y así sucesivamente hasta encontrar una 
+dirección con espacio suficiente para albergar al registro.
+#### Dispersión doble
+- El método consiste en disponer de dos funciones de hash. La primera obtiene a partir de la llave la dirección de base, en la 
+cual el registro será ubicado. De producirse overflow, se utilizará la segunda función de hash. Esta segunda función no retorna 
+una dirección, sino que su resultado es un desplazamiento. Este desplazamiento se suma a la dirección base obtenida con la primera 
+función, generando así la nueva dirección donde se intentará ubicar al registro. En caso de generarse nuevamente overflow, se deberá 
+sumar de manera reiterada el desplazamiento obtenido, y así sucesivamente hasta encontrar una dirección con espacio suficiente para albergar al
+registro. La doble dispersión tiende a esparcir los registros en saturación a lo largo del archivo de datos, pero con un
+efecto lateral importante. Los registros en overflow tienden a ubicarse “lejos” de sus direcciones de base, lo cual
+produce un mayor desplazamiento de la cabeza lectora/grabadora del disco rígido, aumentando el tiempo de respuesta.
+
+#### Hashing extensible
+Este es el que usaremos en la practica. Ejemplo:
+
+Para las siguientes claves, realice el proceso de dispersión mediante el método de
+hashing extensible, sabiendo que cada nodo tiene capacidad para dos registros. 
+El número natural indica el orden de llegada de las claves.  
+
+Se debe mostrar el estado del archivo para cada operación. Justifique brevemente ante 
+colisión y desborde los pasos que realiza.
+
+1 Verón    01100010  2 Braña   01010111 
+3 Calderón 00110100  4 Sosa    10001000
+5 Pavone   11110101  6 Andújar 00101001
+
+-------------------------------------------------------------------------------------------------------------------
+1 Verón    01100010
+
+(0)     (0)
+ 0:     (Verón)()    
+
+- El número cero sobre la tabla indica que no es necesario ningún bit de la secuencia obtenida por la 
+función de dispersión.
+- Se agrega la clave Verón en la celda 0 sin problema.  
+
+-------------------------------------------------------------------------------------------------------------------
+2 Braña   01010111
+
+(0)     (0)
+ 0:     (Braña)(Verón) 
+
+- Se agrega la clave Braña en la celda 0, provocando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+3 Calderón 00110100
+
+(1)     (1)
+ 0:     (Calderón)(Verón)
+
+        (1)
+ 1:     (Braña)()
+
+- La insercion de Calderón produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- La tabla tiene una celda única, y como se dispone ahora de dos nodos, hace falta generar más direcciones. 
+- La cantidad de celdas de la tabla se duplica y el valor asociado a la tabla se incrementa en uno.
+- La primera celda de la tabla direcciona a la cubeta saturada, y la nueva celda apunta a la nueva cubeta generada.
+- Se redispersa.
+
+-------------------------------------------------------------------------------------------------------------------
+4 Sosa    10001000
+
+(2)     (2)
+ 00:    (Calderón)(Sosa)
+
+        (2)
+ 10:    (Verón)()
+
+        (1)
+ 01:    (Braña)()
+ 11:
+
+- La insercion de Sosa produce desborde. Se incrementa en uno el valor asociado a la cubeta saturada.
+- Se genera una nueva cubeta con el mismo valor asociado a la cubeta saturada.
+
+- La tabla no dispone de entradas suficientes para direccionar a la nueva cubeta.
+- Al no disponer de celdas suficientes en la tabla en memoria principal, se duplica el espacio disponible, que a 
+partir de este momento necesita 2 bits de la función de hash para poder direccionar un registro. 
+- La celda de referencia 00 contiene la dirección de la cubeta saturada, mientras que la celda de referencia 10 
+contiene la dirección de la nueva cubeta.
+- Se redispersan solamente las claves de las cubetas involucradas:
+Verón    01100010
+Calderón 00110100
+Sosa     10001000
+
+-------------------------------------------------------------------------------------------------------------------
+5 Pavone   11110101
+
+(2)     (2)
+ 00:    (Calderón)(Sosa)
+
+        (2)
+ 10:    (Verón)()
+
+        (1)
+ 01:    (Braña)(Pavone)
+ 11:
+
+- Se agrega la clave Pavone en la celda 01 generando colision.
+
+-------------------------------------------------------------------------------------------------------------------
+6 Andújar 00101001
+
+(2)     (2)
+ 00:    (Calderón)(Sosa)
+
+        (2)
+ 10:    (Verón)
+
+        (2)
+ 01:    (Andújar)(Pavone)
+
+        (2)
+ 11:    (Braña)
+
+- Su dirección de almacenamiento corresponde a la cubeta asociada a la celda 01. Se genera desborde 
+y se crea una nueva cubeta.
+- El valor asociado a ambas cubetas coincide con el valor asociado a la tabla en memoria. 
+Por lo tanto: 
+    La tabla posee direcciones suficientes para direccionar a la nueva cubeta y la cantidad de 
+    celdas NO debe ser duplicada!
+
+**Muchisimos mas ejemplos [here](https://github.com/fabioo66/FOD/tree/main/Practicas%20resueltas/Practica5/Parte%202)**
+
+##### Observaciones
+Para reconocer cuantas celdas apuntaran a una misma cubeta 2^a-1 --> donde a = numero de tabla actualmente. Ejemplo:
+
+ (3)     (1)
+ 000:    (Alterio)()
+ 100:
+ 010:    
+ 110:
+         (2)
+ 001:    (Sbaraglia)()
+ 101:
+
+         (3)
+ 011:    (Altavista)
+ 
+
+         (3)
+ 111:    (Darin)(De la Serna) 
+ 
+ En este caso apuntan 4 celdas a la cubeta uno, ya que realizo 2^3-1 = 2² = 4 --> Por lo tanto 4 celdas apuntan al mismo nodo
+
+
 
 
 
