@@ -1,0 +1,79 @@
+Dado un árbol B de orden 5  y con política izquierda, para cada operación dada:
+a. Dibuje el árbol resultante
+b. Explique las decisiones tomadas
+c. Escriba las lecturas y escrituras
+Operaciones: -30, +3600, -300, -2100, -2400
+
+Arbol inicial
+
+                                nodo 2: 4 i 0(300)3(900)1(1350)5(1800)4
+
+nodo 0: 1 h(30)    nodo 3: 2 h(600)(750)    nodo 1: 2 h(1050)(1200) nodo 5: 2 h(1500)(1650)     nodo 4: 4 h(2100)(2400)(2700)(3000)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-30
+
+                            2: 0 (600) 3 (900) 1 (1350) 5 (1800) 4
+
+0: (300)    3: (750)    1: (1050)(1200)     5: (1500)(1650)     4: (2100)(2400)(2700)(3000)
+
+L2, L0, E0, E3, E2
+
+- Intento eliminar la clave 30 del nodo 0, como hay underflow y no tengo hermano izquierdo, redistribuyo con el hermano derecho.
+- Baja la clave padre al nodo 0 y sube la clave 600.
+
+-----------------------------------------------------------------------------------------------------------------------------------
++3600
+
+                                        8: 2 (1350) 7
+
+                        2: 0 (600) 3 (900) 1      7: 5 (1800) 4 (2700) 6
+
+0: (300)    3: (750)    1: (1050)(1200)     5: (1500)(1650)     4: (2100)(2400)   6: (3000)(3600)
+
+L2, L4, E4, E6, E2, E7, E8
+                                                                                                   |
+- Intento agregar la clave 3600 al nodo 4, como se produce overflow, divido el nodo (2100)(2400) (2700) (3000)(3600). Promociono 2700
+- Esto me propaga overflow en la raiz, por lo tanto, repito el mismo procedimiento.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-300
+
+                                        8: 2 (1350) 7
+
+                        2:  0 (900) 1      7: 5 (1800) 4 (2700) 6
+
+0: (600)(750)    1: (1050)(1200)     5: (1500)(1650)     4: (2100)(2400)   6: (3000)(3600)
+
+L8, L2, L0, L3, E0, E2 
+
+- Intento eliminar la clave 300 del nodo 0, como hay underflow y no puedo redistribuir con el hermano izquierdo, redistribuyo.
+- Se libera el nodo 3 almacenandolo en la pila.
+- Baja la clave 600 al nodo 0 y se reubican los punteros
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-2100
+
+                                        8: 2 (1350) 7
+
+                        2:  0 (900) 1      7: 5 (1800) 4 (2700) 6
+
+    0: (600)(750)    1: (1050)(1200)     5: (1500)(1650)     4: (2400)   6: (3000)(3600)
+
+L8, L7, L4, E4
+
+- Elimino la clave 2100 del nodo 4 sin problemaa.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-2400
+
+                                8: 2 (1350) 7
+
+                    2:  0 (900) 1      7: 5 (1650) 4 (2700) 6
+
+    0: (600)(750)    1: (1050)(1200)     5: (1500)     4: (1800)   6: (3000)(3600)
+
+L8, L7, L4, L5, E5, E4, E7 
+
+- Intento eliminar la clave 30 del nodo 0, como hay underflow, redistribuyo con el hermano izquierdo.
+- Baja la clave padre al nodo 4 y sube la clave 1650.
