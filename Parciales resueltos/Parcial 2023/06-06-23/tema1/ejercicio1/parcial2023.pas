@@ -29,8 +29,7 @@ begin
 	end;
 end;
 
-// En el parcial se dispone
-procedure crearArchivo(var arch : archivo);
+{procedure crearArchivo(var arch : archivo);
 var
     p : producto;
 begin
@@ -49,7 +48,7 @@ begin
         leerProducto(p);
     end;
     close(arch);
-end;
+end;}
 
 // funcion que verifica si existe un producto en el archivo, en el parcial se dispone
 function existeProducto(var arch : archivo; codigo : integer) : boolean;
@@ -58,64 +57,69 @@ var
     ok : boolean;
 begin
     ok := false;
+    reset(arch);
     while((not eof(arch)) and (not ok))do begin    
         read(arch, p);
         if(p.codigo = codigo)then
             ok := true;
     end;
     existeProducto := ok;
+    close(arch);
 end;
 
 procedure agregarProducto(var arch : archivo);
 var
-    p, aux : producto;
+    p, cabecera : producto;
 begin
-    reset(arch);
     writeln('Ingrese los datos del producto que desea agregar');
-    leerProducto(aux);
-    // asumimos que existe producto no abre ni cierra el archivo
-    if(existeProducto(arch, aux.codigo))then 
+    leerProducto(p);
+    // asumimos que existe producto abre y cierra el archivo
+    if(existeProducto(arch, p.codigo))then 
         writeln('El producto ya existe')
     else begin
-        seek(arch, 0);
-        read(arch, p);
-        if(p.codigo = 0)then begin
+        reset(arch);
+        // Leo cabecera
+        read(arch, cabecera);
+        if(cabecera.codigo = 0)then begin
             seek(arch, filesize(arch));
-            write(arch, aux);
+            write(arch, p);
         end
         else begin
-            seek(arch, p.codigo *-1);
-			read(arch, p);
+            seek(arch, cabecera.codigo *-1);
+			read(arch, cabecera);
 			seek(arch, filepos(arch)-1);
-			write(arch, aux);
-			seek(arch, 0);
 			write(arch, p);
+			seek(arch, 0);
+			write(arch, cabecera);
         end;
+        close(arch);
         writeln('Producto agregado correctamente');
     end;
-    close(arch);
 end;
 
 procedure quitarProducto(var arch : archivo);
 var
-    p: producto;
+    cabecera, p: producto;
     codigo : integer;
 begin
-    reset(arch);
     writeln('Ingrese el codigo del producto que desea quitar');
     readln(codigo);
-    read(arch, p);
     if(existeProducto(arch, codigo))then begin
+        reset(arch);
+        read(arch, cabecera);
+        read(arch, p);
+        while(p.codigo <> codigo)do 
+            read(arch, p);
         seek(arch, filepos(arch)-1);
-		write(arch, p);
-		p.codigo := (filePos(arch)-1) * -1; 
+		write(arch, cabecera);
+		cabecera.codigo := (filePos(arch)-1) * -1; 
 		seek(arch, 0);
-		write(arch, p);
+		write(arch, cabecera);
+		close(arch);
 		writeln('Producto eliminado correctamente')
     end
     else
         writeln('El producto no existe');
-    close(arch);
 end;
 
 procedure imprimirProducto(var arch : archivo);
@@ -139,9 +143,14 @@ end;
 var
     arch : archivo;
 begin
-    crearArchivo(arch);
+    assign(arch, 'productos');
+    writeln('Archivo sin modificar');
+    imprimirProducto(arch);
     agregarProducto(arch);
+    writeln('Archivo con producto agregado');
+    imprimirProducto(arch);
     quitarProducto(arch);
+    writeln('Archivo con producto eliminado');
     imprimirProducto(arch);
 end.
 

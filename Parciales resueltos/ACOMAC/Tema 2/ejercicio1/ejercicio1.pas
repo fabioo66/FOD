@@ -53,6 +53,7 @@ var
     ok : boolean;
     d : tDinosaurio;
 begin
+    reset(a);
     ok := false;
     while(not eof(a)) and (not ok)do begin
         read(a, d);
@@ -60,25 +61,29 @@ begin
             ok := true;
     end;
     existe := ok;
+    close(a);
 end;
 
 procedure eliminarDinos (var a: tArchDinos ; tipoDinosaurio: String);
 var
-	d : tDinosaurio;
+	cabecera, d : tDinosaurio;
 begin
-	reset(a);
-	read(a, d);
 	if(existe(a, tipoDinosaurio))then begin
+        reset(a);
+        read(a, cabecera);
+        read(a, d);
+        while(d.tipo <> tipoDinosaurio)do
+            read(a, d);
 		seek(a, filepos(a)-1);
-		write(a, d);
-		d.codigo := (filePos(a)-1) * -1; 
+		write(a, cabecera);
+		cabecera.codigo := (filePos(a)-1) * -1; 
 		seek(a, 0);
-		write(a, d);
+		write(a, cabecera);
+        close(a);
 		writeln('Dinosaurio eliminado correctamente')
 	end
 	else
 		writeln('No se encontro el dinosaurio');
-	close(a);
 end;
 
 procedure listarEnArchivoDeTexto(var a: tArchDinos);

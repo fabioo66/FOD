@@ -75,6 +75,7 @@ var
     ok : boolean;
     d : tDinosaurio;
 begin
+    reset(a);
     ok := false;
     while(not eof(a)) and (not ok)do begin
         read(a, d);
@@ -82,40 +83,33 @@ begin
             ok := true;
     end;
     existe := ok;
-end;
-
-procedure agregarAlFinal(var a : tarchDinos; registro : tDinosaurio);
-begin
-	seek(a, filesize(a));
-	write(a, registro);
+    close(a);
 end;
 
 procedure agregarDinosaurios(var a: tArchDinos; registro: tDinosaurio);
 var
-    d: tDinosaurio;
-    enlace : integer;
+    cabecera: tDinosaurio;
 begin
-    reset(a);
     if(existe(a, registro.codigo))then
         writeln('Ese dinosaurio ya existe en el archivo')
     else begin
-        seek(a, 0);
-        read(a, d);
-        enlace := d.codigo;
+        reset(a);
+        read(a, cabecera);
         if(enlace = 0) then begin
-            agregarAlFinal(a, registro);
+            seek(a, filesize(a));
+            write(a, registro);
         end
         else begin 
-            seek(a, abs(enlace)); //abs toma el valor absoluto de un numero
-			read(a, d);
-			seek(a, abs(enlace));
+            seek(a, cabecera.codigo * -1); 
+			read(a, cabecera);
+			seek(a, filepos(a)-1);
 			write(a, registro);
 			seek(a, 0);
-			write(a, d);
+			write(a, cabecera);
         end;
+        close(a);
         writeln('El dinosaurio de tipo ', registro.tipo, ' se ha agrego con exito');
     end;
-    close(a);
 end;
 
 procedure listarEnArchivoDeTexto(var a: tArchDinos);
